@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My University WebSite</title>
+    <link rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <a class="logo" href="index.html">
+        <img class="logo-img" src="assets/university.png"
+             alt="Yachay Tech University logo" width="120">
+    </a>
+    <h1 class="site-title">My University Website</h1>
+    <nav class="nav" aria-label="Main Navigation">
+        <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pages/courses.html">Courses</a></li>
+            <li><a href="pages/schedule.html">Schedule</a></li>
+            <li><a href="pages/activities.html">Activities</a></li>
+            <li><a href="pages/map.html">Map</a></li>
+            <li><a href="pages/contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section id="home" class="hero">
+        <figure class="avatar">
+            <img src="assets/perfil.jpg" width="220" height="220"
+                 alt="Portrait of William Garzon, Information Technology student at Yachay Tech University.">
+            <figcaption>William Garzon &ndash; Yachay Tech, 2026</figcaption>
+        </figure>
+        <div class="hero-text">
+            <h2>William Garzon</h2>
+            <p class="tagline">Information Technology student</p>
+            <p class="tagline">10 Semestre</p>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2>About Me</h2>
+        <p>
+            Hi! I'm Willy Wonka, an <abbr title="Information Technology">IT</abbr>
+            student who needs money to spend on videogames, dance and
+            <span lang="es">chaulafán</span>. I currently work as a Full Stack
+            Developer at Ripconciv, a national construction company. These days
+            I'm focused on finishing my degree and learning more about web
+            development fundamentals: HTML, CSS and JavaScript.
+        </p>
+        <p>
+            My personality type is ENFJ and my zodiac sign is Pisces.
+        </p>
+    </section>
+
+    <section id="interests" class="section">
+        <h2>Academic Interests</h2>
+        <p>These are the topics I want to go deeper into during my last semester:</p>
+        <ul class="interests-list">
+            <li>Web development fundamentals: HTML, CSS and JavaScript</li>
+            <li>Databases and data modeling</li>
+            <li>Software architecture and clean code</li>
+            <li>Human-Computer Interaction and <abbr title="User Interface / User Experience">UI/UX</abbr> design</li>
+            <li>Automation of business processes</li>
+        </ul>
+    </section>
+
+    <section id="highlights" class="section">
+        <h2>Highlights</h2>
+
+        <article class="card">
+            <h3>Full Stack Developer at Ripconciv</h3>
+            <p>
+                <img src="assets/ripconciv-logo.png" width="240"
+                     alt="Ripconciv company logo.">
+            </p>
+            <p>
+                I build internal web tools for a national construction company,
+                working on both the interface and the data layer. It is where I
+                learned that a clear structure matters more than a clever one.
+            </p>
+            <p>
+                My main project there is the <strong>Audiovisual Hub</strong>, a
+                web application that centralises the photo and video material of
+                every construction site, together with the official brand assets
+                and document templates of the company.
+            </p>
+
+            <figure>
+                <img src="assets/ripconciv-hub-login.png" width="480"
+                     alt="Login screen of the Ripconciv Audiovisual Hub, with corporate sign-in.">
+                <figcaption>Audiovisual Hub &ndash; sign-in screen</figcaption>
+            </figure>
+
+            <figure>
+                <img src="assets/ripconciv-hub-menu.png" width="480"
+                     alt="Brand section of the Ripconciv Audiovisual Hub showing the side navigation menu, logo variants, colour palette and typography.">
+                <figcaption>Audiovisual Hub &ndash; navigation menu and brand section</figcaption>
+            </figure>
+
+            <figure>
+                <img src="assets/ripconciv-hub-proyectos.png" width="480"
+                     alt="Projects view of the Ripconciv Audiovisual Hub, listing construction sites with their status and drone photography.">
+                <figcaption>Audiovisual Hub &ndash; projects view</figcaption>
+            </figure>
+        </article>
+
+        <article class="card">
+            <h3>Desktop Application: <span lang="es">Centinela</span></h3>
+            <p>
+                <span lang="es">Centinela</span>, built under the Triple-G Tech
+                name, lets a business keep using the security cameras it already
+                owns instead of replacing them. The program connects to the
+                existing <abbr title="Closed-Circuit Television">CCTV</abbr>
+                system and adds a detection model on top, so the value comes
+                from the software and not from new hardware.
+            </p>
+            <p>
+                It counts people in real time, records unique visitors per day,
+                and lets the user draw the exact area of the frame that should
+                be watched. It stores everything locally in
+                <abbr title="Structured Query Language">SQL</abbr>ite and runs on
+                an ordinary computer, using either the
+                <abbr title="Central Processing Unit">CPU</abbr> or the
+                <abbr title="Graphics Processing Unit">GPU</abbr>. It is the
+                project I am most proud of.
+            </p>
+
+            <figure>
+                <img src="assets/centinela-inicio.jpeg" width="480"
+                     alt="Centinela dashboard showing configured cameras, unique visitors of the day, alerts and hardware usage.">
+                <figcaption><span lang="es">Centinela</span> &ndash; dashboard and main menu</figcaption>
+            </figure>
+
+            <figure>
+                <img src="assets/centinela-monitor.jpeg" width="480"
+                     alt="Centinela monitoring view with a grid of camera feeds and green boxes around the people detected by the model.">
+                <figcaption><span lang="es">Centinela</span> &ndash; live monitoring with detection</figcaption>
+            </figure>
+
+            <figure>
+                <img src="assets/centinela-zona-deteccion.jpeg" width="480"
+                     alt="Centinela detection zone editor, where the user drags points to define the watched area of a camera frame.">
+                <figcaption><span lang="es">Centinela</span> &ndash; detection zone editor</figcaption>
+            </figure>
+        </article>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 William Garzon &ndash; Yachay Tech University</p>
+    <p>Web Applications &ndash; Workshop 1 &ndash; <span lang="es">Hecho con HTML5</span></p>
+</footer>
+
+</body>
+</html>

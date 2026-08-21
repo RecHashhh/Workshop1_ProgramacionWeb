@@ -1,0 +1,16 @@
+# Cache de herramientas locales
+.impeccable/
+
+# Windows / OneDrive
+Thumbs.db
+desktop.ini
+*.lnk
+~$*
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Material solo para elaborar el informe, no se publica
+assets/informe/
