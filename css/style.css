@@ -673,7 +673,11 @@ tbody th {
 /* Una celda con rowspan es un bloque de clase; las vacías son
    huecos libres. Se dibuja como caja cerrada, no como pestaña:
    el borde completo es lo que comunica "esto es una unidad". */
-td[rowspan] {
+/* Solo en el horario: ahi una celda con rowspan ES un bloque de
+   clase. En la tabla de sesiones el rowspan solo agrupa filas que
+   comparten edificio o profesor, y teñirlas dejaba media tabla
+   pintada y media no, según si el dato se repetía o no. */
+.timetable td[rowspan] {
   background: var(--accent-bg);
   border: 2px solid var(--accent-bd);
   color: var(--text);
@@ -684,13 +688,27 @@ td[rowspan] {
    Cada asignatura tiene su pastel y se repite en el horario, en la
    tabla de sesiones y en su ficha de Courses, para que la vista se
    pueda seguir de una página a otra. */
-td.c-web,
-td.c-stoch,
-td.c-phys { color: var(--text); font-weight: 600; }
+/* Estas reglas tienen que igualar la especificidad de
+   `.timetable td[rowspan]` (0,2,1), si no el tinte genérico las
+   gana y el horario vuelve a salir todo del mismo rojo. Al empatar
+   en especificidad decide el orden, y estas van después. */
+table td.c-web,
+table td.c-stoch,
+table td.c-phys { color: var(--text); font-weight: 600; }
 
-td.c-web   { background: var(--sub-web-bg);   border: 2px solid var(--sub-web-bd); }
-td.c-stoch { background: var(--sub-stoch-bg); border: 2px solid var(--sub-stoch-bd); }
-td.c-phys  { background: var(--sub-phys-bg);  border: 2px solid var(--sub-phys-bd); }
+/* En la tabla de sesiones el color va solo en la columna del curso:
+   hace de identificador de la fila sin repintar datos que no
+   pertenecen a la materia. */
+.sessions td[rowspan]:not([class]) {
+  background: transparent;
+  border: 1px solid var(--border);
+  font-weight: 400;
+  color: var(--text-dim);
+}
+
+table td.c-web   { background: var(--sub-web-bg);   border: 2px solid var(--sub-web-bd); }
+table td.c-stoch { background: var(--sub-stoch-bg); border: 2px solid var(--sub-stoch-bd); }
+table td.c-phys  { background: var(--sub-phys-bg);  border: 2px solid var(--sub-phys-bd); }
 
 /* En la ficha de cada curso el color va en una franja superior:
    identifica la materia sin teñir el texto, que debe seguir siendo
@@ -1094,4 +1112,252 @@ footer p {
 /* En pantallas chicas estorban más de lo que aportan. */
 @media (max-width: 640px) {
   .pet { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VISOR DE IMAGEN (LIGHTBOX)
+   Sin JavaScript. Dos mecanismos de CSS hacen todo el trabajo:
+
+   1. `:target` — la sección del visor nace oculta y aparece cuando
+      la URL apunta a su id. Es lo que convierte un clic en un
+      cambio de estado.
+   2. La casilla oculta + su `<label>` — el zoom. Pulsar la etiqueta
+      marca la casilla, y `:checked ~` reestila la imagen. Es la
+      única forma de tener un interruptor en CSS puro.
+   ══════════════════════════════════════════════════════════════ */
+
+/* El disparador: la miniatura entera es el área de clic. */
+.zoom-trigger {
+  display: block;
+  text-decoration: none;
+  cursor: zoom-in;
+  position: relative;
+}
+.zoom-trigger img { transition: filter var(--transition); }
+.zoom-trigger:hover img,
+.zoom-trigger:focus-visible img { filter: brightness(0.88); }
+.zoom-trigger:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* La lupa aparece sobre la miniatura al pasar por encima. */
+.zoom-trigger::after {
+  content: "+";
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  font-family: var(--font-px);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--bg2);
+  background: var(--accent);
+  border: 2px solid var(--bg2);
+  padding: 0.15rem 0.5rem;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.zoom-trigger:hover::after,
+.zoom-trigger:focus-visible::after { opacity: 1; }
+
+.lightboxes { display: contents; }
+
+.lightbox { display: none; }
+
+.lightbox:target {
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 22rem);
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg2);
+}
+
+/* Capa que cubre el fondo: pulsar fuera de la foto cierra el visor.
+   Va detrás de todo lo demás del visor. */
+.lb-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* ── Escenario de la imagen ─────────────────────────────────── */
+.lb-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: #14161f;
+  overflow: auto;
+  min-width: 0;
+}
+
+.lb-zoom-state {
+  /* La casilla no se ve, pero sigue siendo enfocable con el teclado:
+     por eso se mueve fuera de la vista en vez de ocultarse con
+     `display: none`, que la sacaría del orden de tabulación. */
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.lb-frame {
+  display: block;
+  cursor: zoom-in;
+  max-width: 100%;
+}
+.lb-frame img {
+  display: block;
+  max-width: 100%;
+  max-height: 78vh;
+  width: auto;
+  height: auto;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Con la casilla marcada la imagen pasa a su tamaño natural y el
+   escenario, que ya tiene overflow, permite arrastrar la vista. */
+.lb-zoom-state:checked ~ .lb-frame { cursor: zoom-out; }
+.lb-zoom-state:checked ~ .lb-frame img {
+  max-width: none;
+  max-height: none;
+  width: auto;
+}
+.lb-zoom-state:checked ~ .lb-hint::after { content: " (zoom on)"; }
+
+/* Foco visible del zoom: la casilla es invisible, así que el anillo
+   se dibuja sobre la etiqueta, que es lo que el usuario ve. */
+.lb-zoom-state:focus-visible ~ .lb-frame img {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.lb-hint {
+  font-family: var(--font-px);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: none;
+  margin: 0;
+}
+
+/* ── Panel de información ───────────────────────────────────── */
+.lb-info {
+  position: relative;
+  z-index: 1;
+  background: var(--bg2);
+  border-left: 2px solid var(--border-hi);
+  padding: 4rem 1.5rem 1.5rem;
+  overflow-y: auto;
+}
+.lb-count {
+  font-family: var(--font-px);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.lb-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+.lb-alt {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  max-width: none;
+}
+
+/* ── Controles ──────────────────────────────────────────────── */
+.lb-close,
+.lb-nav {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px: el mínimo cómodo para tocar con el dedo. */
+  min-width: 44px;
+  min-height: 44px;
+  font-family: var(--font-px);
+  text-decoration: none;
+  color: var(--text);
+  background: var(--bg2);
+  border: 2px solid var(--border-hi);
+  transition: color var(--transition), border-color var(--transition),
+              background var(--transition);
+}
+.lb-close:hover, .lb-nav:hover,
+.lb-close:focus-visible, .lb-nav:focus-visible {
+  color: var(--bg2);
+  background: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.lb-close {
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.lb-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+.lb-prev { left: 0.75rem; }
+.lb-next { right: calc(22rem + 0.75rem); }
+
+@media (max-width: 860px) {
+  .lightbox:target { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+  .lb-info { border-left: none; border-top: 2px solid var(--border-hi); padding: 1rem; }
+  .lb-next { right: 0.75rem; }
+  .lb-frame img { max-height: 60vh; }
+}
+
+/* ── FILA DE FIGURAS ──────────────────────────────────────────
+   Las capturas de un mismo proyecto van en una sola fila. Antes
+   iban apiladas y cada artículo ocupaba tres pantallas de alto.
+   La rejilla se reacomoda sola: cada figura pide 180px de ancho
+   mínimo y el navegador decide cuántas caben. */
+.figure-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+.figure-row figure { margin: 0; }
+.figure-row figure img { width: 100%; height: auto; }
+.figure-row figcaption { font-size: 0.72rem; }
+
+/* ── TARJETA DE PROYECTO COMPLETAMENTE PULSABLE ───────────────
+   La captura cubre la tarjeta al pasar el mouse y tapa el título,
+   así que el enlace dejaba de verse justo cuando uno quería
+   pulsarlo. Este pseudo-elemento estira el área de clic del enlace
+   a toda la tarjeta: se puede pulsar en cualquier punto.
+   Sigue siendo UN solo enlace, así que el teclado y el lector de
+   pantalla ven una sola parada, no una caja entera clicable. */
+.card { position: relative; }
+.card-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.projects-grid .card:hover { cursor: pointer; }
+
+/* La marca de "abre en otra pestaña" se mantiene visible sobre la
+   captura, para que se sepa que la tarjeta lleva a alguna parte. */
+.projects-grid .card:hover .card-link::after,
+.projects-grid .card:focus-within .card-link::after {
+  position: relative;
+  z-index: 3;
+  color: var(--bg2);
+  background: var(--accent);
+  padding: 0.1rem 0.4rem;
 }
