@@ -494,9 +494,11 @@ figcaption {
 }
 .card-link:hover { color: var(--accent); }
 
-/* El enlace se dibuja por encima de la captura, que si no la taparía
-   (la captura es absoluta y cubre la tarjeta entera). */
-.card h3 { position: relative; z-index: 1; }
+/* El título NO se levanta sobre la captura. Al hacerlo, el texto
+   oscuro quedaba invisible sobre el fondo oscuro del visor y solo
+   se veían el "#" y la flecha, que son rojos. La captura cubre la
+   tarjeta entera, y como lleva `pointer-events: none` el clic la
+   atraviesa: el enlace del título se sigue pudiendo pulsar. */
 
 .card:focus-within {
   outline: 3px solid var(--accent);
