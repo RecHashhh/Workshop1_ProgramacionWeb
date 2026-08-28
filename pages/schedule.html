@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule &ndash; My University WebSite</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -40,7 +41,9 @@
     <section id="timetable" class="section">
         <h2>Timetable</h2>
 
-        <table border="1">
+        <div class="scroll-x">
+
+        <table>
             <caption>My weekly schedule for 2026 / Semester 02</caption>
 
             <thead>
@@ -155,12 +158,15 @@
                 </tr>
             </tfoot>
         </table>
+        </div>
     </section>
 
     <section id="details" class="section">
         <h2>Session details</h2>
 
-        <table border="1">
+        <div class="scroll-x">
+
+        <table>
             <caption>Location and instructor for each session</caption>
             <thead>
                 <tr>
@@ -224,19 +230,22 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <p>
             All classes take place at the Yachay Tech campus in
             <span lang="es">Urcuqu&iacute;</span>. The buildings listed above
             are shown on the <a href="map.html">campus map page</a>.
         </p>
+    
+        <span class="pet pet-cat" aria-hidden="true"></span>
     </section>
 
 </main>
 
 <footer>
     <p>&copy; 2026 William Garzon &ndash; Yachay Tech University</p>
-    <p>Web Applications &ndash; Workshop 1 &ndash; <span lang="es">Hecho con HTML5</span></p>
+    <p>Web Applications &ndash; Workshop 2 &ndash; <span lang="es">Hecho con HTML5 y CSS</span></p>
 </footer>
 
 </body>

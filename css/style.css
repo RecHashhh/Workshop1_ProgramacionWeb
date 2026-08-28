@@ -1,0 +1,986 @@
+/* ══════════════════════════════════════════════════════════════
+   MY UNIVERSITY WEBSITE — William Garzón
+   Workshop 2: presentación con CSS.
+
+   El sistema de diseño viene del portafolio de Clase 01 (basado a
+   su vez en el de RIPCONCIV), con el rojo institucional de la
+   escuela como único acento.
+
+   La estética es "terminal antigua" aplicada SOLO a los acentos:
+   títulos, navegación, botones, etiquetas y la pantalla de
+   bienvenida usan monoespaciada y bordes duros. El texto corrido
+   se queda en Manrope, porque las páginas de Courses y Map tienen
+   párrafos largos y la monoespaciada cansa a esa longitud.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── RESET ────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── TIPOGRAFÍA ───────────────────────────────────────────────
+   Manrope auto-hospedada: no depende de internet ni de un CDN.
+   Si el archivo faltara, el navegador cae a la lista de respaldo
+   de --font-body y la página se sigue viendo bien.
+   La monoespaciada es Courier New: está en todos los sistemas, así
+   que el acento pixel tampoco necesita descargar nada. */
+@font-face {
+  font-family: 'Manrope';
+  src: url('../assets/fonts/Manrope.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── TOKENS ───────────────────────────────────────────────────── */
+:root {
+  /* Superficies */
+  --bg:          #f5f6fa;
+  --bg2:         #ffffff;
+  --bg3:         #eef0f6;
+  --border:      #e1e4ec;
+  --border-hi:   #c7ccdc;
+
+  /* Texto */
+  --text:        #14161f;
+  --text-dim:    #5b6072;
+
+  /* Acento: rojo institucional */
+  --accent:      #a4161a;
+  --accent-dim:  #7c1013;
+  --accent-bg:   rgba(164, 22, 26, 0.08);
+  --accent-bd:   rgba(164, 22, 26, 0.25);
+
+  /* Estado (semántico, independiente del acento) */
+  --ok:          #1c6b45;
+
+  /* Forma y movimiento.
+     --radius es 0: el borde duro es la base del look pixel.
+     --shadow-px es la sombra sólida desplazada, sin difuminar:
+     así se dibujaban las sombras cuando no había blur. */
+  --radius:      0;
+  --shadow:      0 1px 2px rgba(20, 22, 40, 0.04),
+                 0 2px 8px rgba(20, 22, 40, 0.06);
+  --shadow-px:   4px 4px 0 var(--border-hi);
+  --shadow-px-a: 4px 4px 0 var(--accent);
+  --transition:  0.15s ease;
+
+  /* Medidas */
+  --max-width:   1440px;
+  --measure:     68ch;
+  --font-body:   'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-px:     'Courier New', 'Consolas', ui-monospace, monospace;
+}
+
+/* ── TEMA OSCURO ──────────────────────────────────────────────
+   Se activa solo si el sistema del visitante está en modo oscuro.
+   Es CSS puro: no hace falta JavaScript. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:         #0a0c0f;
+    --bg2:        #111318;
+    --bg3:        #191c23;
+    --border:     #2a2f3a;
+    --border-hi:  #3d4455;
+    --text:       #e8eaf0;
+    --text-dim:   #9aa1b5;
+    --accent:     #f87171;
+    --accent-dim: #fca5a5;
+    --accent-bg:  rgba(248, 113, 113, 0.12);
+    --accent-bd:  rgba(248, 113, 113, 0.30);
+    --ok:         #6fcb9f;
+    --shadow:     0 1px 3px rgba(0, 0, 0, 0.5),
+                  0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ── BASE ─────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Los títulos son el acento pixel: monoespaciada, en versalitas,
+   con separación de letras y un prefijo ">" que imita un prompt. */
+h1, h2, h3 {
+  font-family: var(--font-px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 0.75rem; }
+h2 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+
+p  { color: var(--text-dim); max-width: var(--measure); margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  transition: color var(--transition);
+}
+a:hover { color: var(--accent-dim); }
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+strong { color: var(--text); font-weight: 700; }
+
+abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+
+small { font-size: 0.82rem; color: var(--text-dim); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ── INTRO: TERMINAL ANTIGUA ──────────────────────────────────
+   Pantalla completa de bienvenida. NO oculta el sitio: es
+   simplemente la primera sección, y el botón baja a #home. Quien
+   no entienda el juego solo tiene que hacer scroll. Sin
+   JavaScript: todo es animación CSS y un enlace ancla. */
+.intro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  background: var(--bg2);
+  border-bottom: 2px solid var(--border-hi);
+}
+
+.intro-kicker {
+  font-family: var(--font-px);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  max-width: none;
+}
+
+/* Efecto máquina de escribir.
+   El truco: animar el ANCHO en pasos discretos, uno por carácter.
+   Va en monoespaciada porque la unidad `ch` mide el ancho de un
+   carácter, y solo en monoespaciada todos miden lo mismo.
+   "Hola, Mundo!" = 12 caracteres → 12ch y steps(12). */
+.typewriter {
+  font-family: var(--font-px);
+  font-size: clamp(1.75rem, 6vw, 3.5rem);
+  font-weight: 700;
+  color: var(--text);
+  max-width: none;
+  width: 12ch;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent);
+  animation: type 2.4s steps(12) 0.4s both,
+             caret 0.8s step-end infinite;
+}
+
+@keyframes type {
+  from { width: 0; }
+  to   { width: 12ch; }
+}
+
+@keyframes caret {
+  50% { border-color: transparent; }
+}
+
+.print-btn {
+  font-family: var(--font-px);
+  font-size: clamp(2.5rem, 9vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--accent);
+  background: var(--bg2);
+  border: 4px solid var(--accent);
+  padding: 0.6rem 3rem;
+  margin-top: 1rem;
+  box-shadow: var(--shadow-px-a);
+  /* Entra de una: en esta pantalla el botón está solo, no hay
+     tecleo previo que esperar. */
+  animation: appear 0.5s ease both;
+}
+.print-btn:hover,
+.print-btn:focus-visible {
+  background: var(--accent);
+  color: var(--bg2);
+  /* El botón "se hunde": se desplaza lo mismo que medía su sombra */
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.intro-hint {
+  font-family: var(--font-px);
+  font-size: 0.8rem;
+  max-width: none;
+  animation: appear 0.6s ease 0.8s both;
+}
+
+/* ── SEGUNDA PANTALLA: EL SALUDO ──────────────────────────────
+   Vive oculta y solo se muestra cuando la URL la apunta (#hello).
+   `:target` es el único selector de CSS que reacciona a un clic
+   sin JavaScript: coincide con el elemento cuyo id está en la
+   barra de direcciones. Por eso el saludo puede aparecer DESPUÉS
+   de pulsar Print y no antes.
+
+   Se dibuja fija sobre todo lo demás para que la pantalla quede
+   limpia: al pulsar Print no se ve el sitio detrás. */
+.intro-hello { display: none; }
+
+/* Cubre toda la pantalla mientras dura el saludo, y se retira sola:
+   la animación mantiene la capa opaca ~3,4s (lo que tarda el tecleo)
+   y luego la desvanece. `visibility: hidden` al final la saca del
+   camino del mouse y del lector de pantalla, cosa que `opacity: 0`
+   por sí sola no hace. */
+.intro-hello:target {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg2);
+  animation: greet-exit 4.2s ease both;
+}
+
+@keyframes greet-exit {
+  0%, 80%  { opacity: 1; visibility: visible; }
+  100%     { opacity: 0; visibility: hidden; }
+}
+
+/* Con el saludo activo, la pantalla del botón se retira: cuando la
+   capa se desvanece, lo que queda debajo es el sitio empezando por
+   el encabezado, no el botón otra vez. El combinador "~" solo mira
+   hacia adelante; por eso #hello va antes en el HTML. */
+.intro-hello:target ~ .intro-start { display: none; }
+
+.intro-wait { animation: appear 0.6s ease 2.9s both; }
+
+/* ── HEADER + NAVEGACIÓN ──────────────────────────────────────── */
+header {
+  background: var(--bg2);
+  border-bottom: 2px solid var(--border-hi);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0.75rem 1.5rem;
+}
+
+.logo { display: inline-block; text-decoration: none; }
+.logo-img { height: 34px; width: auto; }
+
+.site-title {
+  font-family: var(--font-px);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  max-width: none;
+  margin: 0.4rem 0 0.6rem;
+}
+h1.site-title { font-size: 1.15rem; margin-bottom: 0.6rem; }
+
+.nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+}
+
+.nav-list a {
+  display: block;
+  font-family: var(--font-px);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-dim);
+  border: 2px solid transparent;
+  padding: 0.3rem 0.7rem;
+  transition: color var(--transition), border-color var(--transition),
+              background var(--transition);
+}
+.nav-list a:hover,
+.nav-list a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  outline: none;
+}
+
+/* El encabezado va pegado arriba, así que al saltar a un ancla el
+   destino quedaba escondido detrás. `scroll-margin-top` reserva esa
+   altura para que la sección aterrice completa y visible. */
+:target { scroll-margin-top: 7.5rem; }
+main [id] { scroll-margin-top: 7.5rem; }
+
+/* ── LAYOUT DE CONTENIDO ──────────────────────────────────────── */
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.section {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* El prompt ">" delante de cada título de sección. Se genera con
+   CSS, no está en el HTML: la decoración no ensucia el marcado. */
+.section > h1::before,
+.section > h2::before {
+  content: "> ";
+  color: var(--accent);
+}
+
+.section h3 { margin-top: 1.5rem; }
+.section h3:first-of-type { margin-top: 0.5rem; }
+
+.tagline {
+  font-family: var(--font-px);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 0.35rem;
+}
+
+.meta {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.meta::before { content: "$ "; color: var(--accent); }
+
+/* ── HERO ─────────────────────────────────────────────────────── */
+.hero {
+  scroll-margin-top: 7.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.hero-text { flex: 1 1 320px; }
+
+.avatar { flex: 0 0 auto; margin: 0; }
+.avatar img {
+  border: 3px solid var(--accent);
+  box-shadow: var(--shadow-px);
+}
+
+/* ── LISTAS ───────────────────────────────────────────────────── */
+ul, ol { margin: 0 0 1rem 1.35rem; max-width: var(--measure); }
+li { margin-bottom: 0.35rem; color: var(--text-dim); }
+li strong { color: var(--text); }
+
+/* Marcador cuadrado: el punto redondo rompe el look de bloque. */
+main li::marker { content: "\25AA  "; color: var(--accent); }
+main ol li::marker { content: normal; color: var(--accent); }
+.nav-list li::marker { content: none; }
+
+.interests-list { margin-left: 1.35rem; }
+
+/* ── FIGURAS ──────────────────────────────────────────────────── */
+figure {
+  margin: 1.25rem 0;
+  max-width: 100%;
+}
+figure img {
+  border: 2px solid var(--border-hi);
+  background: var(--bg3);
+}
+figcaption {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  padding-top: 0.5rem;
+  border-top: 2px solid var(--border);
+  margin-top: 0.5rem;
+}
+
+/* ── TARJETAS (proyectos del index) ───────────────────────────── */
+/* Rejilla que se reacomoda sola: cada tarjeta pide 290px mínimo y
+   el navegador decide cuántas caben por fila. Sin media queries. */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  position: relative;   /* ancla para la captura, que va encima */
+  overflow: hidden;     /* recorta la captura al borde de la tarjeta */
+  background: var(--bg);
+  border: 2px solid var(--border-hi);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.projects-grid .card { margin-bottom: 0; }
+
+/* Captura de la aplicación: cubre la tarjeta al pasar el mouse.
+   `position: absolute` la saca del flujo, así que aparecer y
+   desaparecer NO mueve nada de sitio: cero salto de layout.
+   `:focus-within` hace lo mismo con el teclado, para quien navega
+   con Tab y nunca pasa un mouse por encima. */
+.card-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Fondo oscuro: la captura casi nunca tiene la proporción de la
+     tarjeta, así que en vez de recortarla se muestra entera. Se
+     lee como un visor, no como un hueco. */
+  background: #14161f;
+  padding: 0.6rem;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.25s ease, transform 0.35s ease;
+  pointer-events: none;   /* que no bloquee el hover de la tarjeta */
+}
+
+.card:hover .card-preview,
+.card:focus .card-preview,
+.card:focus-within .card-preview {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* El título de cada proyecto es un enlace al sistema en vivo. Eso
+   resuelve el acceso por teclado sin trucos: al tabular hasta el
+   enlace, `:focus-within` se activa y la captura aparece igual que
+   con el mouse. Un `tabindex` en la tarjeta habría creado una
+   parada de tabulación que no lleva a ninguna parte. */
+.card-link {
+  color: inherit;
+  text-decoration: none;
+}
+.card-link:hover { color: var(--accent); }
+
+/* El enlace se dibuja por encima de la captura, que si no la taparía
+   (la captura es absoluta y cubre la tarjeta entera). */
+.card h3 { position: relative; z-index: 1; }
+
+.card:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Marca visible de que el título lleva a algún lado. */
+.card-link::after {
+  content: " ->";
+  color: var(--accent);
+  font-size: 0.85em;
+}
+
+.card .tags {
+  font-family: var(--font-px);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+  border-top: 2px solid var(--border);
+}
+
+.section-intro { margin-bottom: 1.25rem; }
+.card:hover {
+  box-shadow: var(--shadow-px-a);
+  transform: translate(-2px, -2px);
+}
+.card h3 { color: var(--text); }
+.card h3::before { content: "# "; color: var(--accent); }
+
+/* ── TABLAS ───────────────────────────────────────────────────
+   El HTML lleva border="1" porque el Workshop 1 lo permitía para
+   ver la rejilla sin CSS. Ahora el CSS toma el control: se anula
+   ese borde heredado y se dibuja la tabla de verdad.
+   El contenedor .section ya limita el ancho; las tablas anchas
+   se desplazan dentro de su propio scroll horizontal. */
+.scroll-x { overflow-x: auto; margin-bottom: 1.25rem; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+  background: var(--bg2);
+  border: 2px solid var(--border-hi);
+}
+
+caption {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: left;
+  padding-bottom: 0.5rem;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--text-dim);
+}
+
+thead th {
+  font-family: var(--font-px);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-bg);
+  white-space: nowrap;
+}
+
+/* La primera columna del horario son las horas: monoespaciada y
+   con cifras de ancho fijo para que la columna quede alineada. */
+tbody th {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--bg3);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Una celda con rowspan es un bloque de clase; las vacías son
+   huecos libres. Se dibuja como caja cerrada, no como pestaña:
+   el borde completo es lo que comunica "esto es una unidad". */
+td[rowspan] {
+  background: var(--accent-bg);
+  border: 2px solid var(--accent-bd);
+  color: var(--text);
+  font-weight: 600;
+}
+
+tfoot td {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  background: var(--bg3);
+  color: var(--text);
+}
+
+/* ── FORMULARIO ───────────────────────────────────────────────── */
+form { max-width: 44rem; }
+
+fieldset {
+  border: 2px solid var(--border-hi);
+  padding: 1.1rem 1.25rem 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+legend {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--bg2);
+  border: 2px solid var(--accent);
+  padding: 0.15rem 0.6rem;
+}
+
+form p { max-width: none; margin-bottom: 0.85rem; }
+
+/* En bloque: con etiquetas de largo distinto ("Full name" frente a
+   "Phone number (optional)") la version en linea dejaba cada campo
+   arrancando en una vertical distinta. Asi queda una columna
+   alineada. Las de radio/checkbox vuelven a inline mas abajo. */
+label {
+  font-family: var(--font-px);
+  font-size: 0.8rem;
+  color: var(--text);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Las opciones de radio y checkbox llevan la etiqueta al lado,
+   no encima: por eso se alinean en la misma línea. */
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  display: inline;
+  margin-left: 0.35rem;
+  color: var(--text-dim);
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px solid var(--border-hi);
+  padding: 0.45rem 0.6rem;
+  width: 100%;
+  max-width: 24rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  width: auto;
+  accent-color: var(--accent);
+  vertical-align: middle;
+}
+
+input[type="file"] { padding: 0.3rem; }
+
+textarea { max-width: 36rem; resize: vertical; font-family: var(--font-px); }
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-px-a);
+}
+
+button {
+  font-family: var(--font-px);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg2);
+  background: var(--accent);
+  border: 2px solid var(--accent);
+  padding: 0.55rem 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-px);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+button:hover,
+button:focus-visible {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+  outline: none;
+}
+button[type="reset"] {
+  color: var(--accent);
+  background: var(--bg2);
+}
+
+/* ── BOTÓN DE ENLACE ──────────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  font-family: var(--font-px);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--accent);
+  background: var(--bg2);
+  border: 2px solid var(--accent);
+  padding: 0.45rem 1.2rem;
+  margin-top: 0.75rem;
+  box-shadow: var(--shadow-px-a);
+  transition: transform var(--transition), box-shadow var(--transition),
+              background var(--transition), color var(--transition);
+}
+.btn:hover,
+.btn:focus-visible {
+  background: var(--accent);
+  color: var(--bg2);
+  transform: translate(4px, 4px);
+  box-shadow: none;
+  outline: none;
+}
+
+/* ── PIE DE PÁGINA ────────────────────────────────────────────── */
+footer {
+  border-top: 2px solid var(--border-hi);
+  background: var(--bg2);
+  padding: 1.5rem;
+  text-align: center;
+}
+footer p {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  max-width: none;
+  margin-bottom: 0.25rem;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+  main { padding: 1.25rem 0.9rem 2rem; }
+  .section { padding: 1.1rem; }
+  header { padding: 0.6rem 0.9rem; }
+  .nav-list { gap: 0.25rem; }
+  .nav-list a { font-size: 0.72rem; padding: 0.25rem 0.5rem; }
+  .hero { gap: 1.25rem; }
+  .print-btn { padding: 0.5rem 1.5rem; }
+  input, select, textarea { max-width: 100%; }
+}
+
+/* ── MOVIMIENTO REDUCIDO ──────────────────────────────────────
+   Si el visitante pidió menos animación en su sistema, el tecleo
+   y la aparición se desactivan: el texto y el botón salen ya
+   puestos, sin parpadeo ni retardo. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.001s !important;
+  }
+  .typewriter { width: 12ch; border-right-color: transparent; }
+  .print-btn, .intro-hint, .enter-btn { opacity: 1; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   ANIMALITOS PIXEL
+   Dibujados con CSS puro: un solo elemento de 3px al que se le
+   apilan decenas de `box-shadow`, uno por cada píxel encendido.
+   No hay imágenes, ni fuentes de iconos, ni SVG — solo sombras.
+
+   Son decoración: van en `aria-hidden` y no aportan información,
+   así que un lector de pantalla los ignora por completo.
+   ══════════════════════════════════════════════════════════════ */
+
+.pet {
+  display: block;
+  width: 3px;
+  height: 3px;
+  margin: 0.75rem 0 0 auto;
+  /* La sombra dibuja hacia la derecha y hacia abajo desde el punto
+     de origen, así que el propio elemento queda transparente. */
+  background: transparent;
+}
+
+/* Flota apenas: dos pasos discretos, no un movimiento continuo.
+   Un sprite de 8 bits no se desliza, salta. */
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+.pet { animation: hop 1.8s steps(2, end) infinite; }
+
+
+.pet-cat {
+  width: 3px; height: 3px;
+  box-shadow:
+    3px 0px 0 var(--accent),
+    21px 0px 0 var(--accent),
+    3px 3px 0 var(--accent),
+    6px 3px 0 var(--accent),
+    18px 3px 0 var(--accent),
+    21px 3px 0 var(--accent),
+    3px 6px 0 var(--accent),
+    6px 6px 0 var(--accent),
+    9px 6px 0 var(--accent),
+    12px 6px 0 var(--accent),
+    15px 6px 0 var(--accent),
+    18px 6px 0 var(--accent),
+    21px 6px 0 var(--accent),
+    3px 9px 0 var(--accent),
+    6px 9px 0 #ffffff,
+    9px 9px 0 var(--accent),
+    12px 9px 0 var(--accent),
+    15px 9px 0 var(--accent),
+    18px 9px 0 #ffffff,
+    21px 9px 0 var(--accent),
+    3px 12px 0 var(--accent),
+    6px 12px 0 var(--accent),
+    9px 12px 0 var(--accent),
+    12px 12px 0 var(--accent),
+    15px 12px 0 var(--accent),
+    18px 12px 0 var(--accent),
+    21px 12px 0 var(--accent),
+    3px 15px 0 var(--accent),
+    9px 15px 0 var(--accent),
+    12px 15px 0 var(--accent),
+    15px 15px 0 var(--accent),
+    21px 15px 0 var(--accent),
+    6px 18px 0 var(--accent),
+    9px 18px 0 var(--accent),
+    12px 18px 0 var(--accent),
+    15px 18px 0 var(--accent),
+    18px 18px 0 var(--accent),
+    9px 21px 0 var(--accent),
+    15px 21px 0 var(--accent);
+}
+
+.pet-bird {
+  width: 3px; height: 3px;
+  box-shadow:
+    9px 0px 0 var(--accent),
+    12px 0px 0 var(--accent),
+    15px 0px 0 var(--accent),
+    6px 3px 0 var(--accent),
+    9px 3px 0 var(--accent),
+    12px 3px 0 var(--accent),
+    15px 3px 0 var(--accent),
+    18px 3px 0 var(--accent),
+    3px 6px 0 var(--accent),
+    6px 6px 0 var(--accent),
+    9px 6px 0 #ffffff,
+    12px 6px 0 var(--accent),
+    15px 6px 0 var(--accent),
+    18px 6px 0 var(--accent),
+    21px 6px 0 var(--accent),
+    0px 9px 0 var(--accent),
+    3px 9px 0 var(--accent),
+    6px 9px 0 var(--accent),
+    9px 9px 0 var(--accent),
+    12px 9px 0 var(--accent),
+    15px 9px 0 var(--accent),
+    18px 9px 0 var(--accent),
+    21px 9px 0 #ffffff,
+    3px 12px 0 var(--accent),
+    6px 12px 0 var(--accent),
+    9px 12px 0 var(--accent),
+    12px 12px 0 var(--accent),
+    15px 12px 0 var(--accent),
+    18px 12px 0 var(--accent),
+    6px 15px 0 var(--accent),
+    9px 15px 0 var(--accent),
+    12px 15px 0 var(--accent),
+    15px 15px 0 var(--accent),
+    9px 18px 0 var(--accent),
+    15px 18px 0 var(--accent);
+}
+
+.pet-ghost {
+  width: 3px; height: 3px;
+  box-shadow:
+    6px 0px 0 var(--border-hi),
+    9px 0px 0 var(--border-hi),
+    12px 0px 0 var(--border-hi),
+    15px 0px 0 var(--border-hi),
+    3px 3px 0 var(--border-hi),
+    6px 3px 0 var(--border-hi),
+    9px 3px 0 var(--border-hi),
+    12px 3px 0 var(--border-hi),
+    15px 3px 0 var(--border-hi),
+    18px 3px 0 var(--border-hi),
+    0px 6px 0 var(--border-hi),
+    3px 6px 0 var(--border-hi),
+    6px 6px 0 var(--bg2),
+    9px 6px 0 var(--border-hi),
+    12px 6px 0 var(--border-hi),
+    15px 6px 0 var(--bg2),
+    18px 6px 0 var(--border-hi),
+    21px 6px 0 var(--border-hi),
+    0px 9px 0 var(--border-hi),
+    3px 9px 0 var(--border-hi),
+    6px 9px 0 var(--border-hi),
+    9px 9px 0 var(--border-hi),
+    12px 9px 0 var(--border-hi),
+    15px 9px 0 var(--border-hi),
+    18px 9px 0 var(--border-hi),
+    21px 9px 0 var(--border-hi),
+    0px 12px 0 var(--border-hi),
+    3px 12px 0 var(--border-hi),
+    6px 12px 0 var(--border-hi),
+    9px 12px 0 var(--border-hi),
+    12px 12px 0 var(--border-hi),
+    15px 12px 0 var(--border-hi),
+    18px 12px 0 var(--border-hi),
+    21px 12px 0 var(--border-hi),
+    0px 15px 0 var(--border-hi),
+    3px 15px 0 var(--border-hi),
+    6px 15px 0 var(--border-hi),
+    9px 15px 0 var(--border-hi),
+    12px 15px 0 var(--border-hi),
+    15px 15px 0 var(--border-hi),
+    18px 15px 0 var(--border-hi),
+    21px 15px 0 var(--border-hi),
+    0px 18px 0 var(--border-hi),
+    6px 18px 0 var(--border-hi),
+    9px 18px 0 var(--border-hi),
+    15px 18px 0 var(--border-hi),
+    18px 18px 0 var(--border-hi);
+}
+
+.pet-fish {
+  width: 3px; height: 3px;
+  box-shadow:
+    6px 0px 0 var(--accent),
+    9px 0px 0 var(--accent),
+    12px 0px 0 var(--accent),
+    15px 0px 0 var(--accent),
+    24px 0px 0 var(--accent),
+    3px 3px 0 var(--accent),
+    6px 3px 0 var(--accent),
+    9px 3px 0 var(--accent),
+    12px 3px 0 var(--accent),
+    15px 3px 0 var(--accent),
+    18px 3px 0 var(--accent),
+    24px 3px 0 var(--accent),
+    27px 3px 0 var(--accent),
+    0px 6px 0 var(--accent),
+    3px 6px 0 var(--accent),
+    6px 6px 0 #ffffff,
+    9px 6px 0 var(--accent),
+    12px 6px 0 var(--accent),
+    15px 6px 0 var(--accent),
+    18px 6px 0 var(--accent),
+    21px 6px 0 var(--accent),
+    24px 6px 0 var(--accent),
+    27px 6px 0 var(--accent),
+    3px 9px 0 var(--accent),
+    6px 9px 0 var(--accent),
+    9px 9px 0 var(--accent),
+    12px 9px 0 var(--accent),
+    15px 9px 0 var(--accent),
+    18px 9px 0 var(--accent),
+    24px 9px 0 var(--accent),
+    27px 9px 0 var(--accent),
+    6px 12px 0 var(--accent),
+    9px 12px 0 var(--accent),
+    12px 12px 0 var(--accent),
+    15px 12px 0 var(--accent),
+    24px 12px 0 var(--accent);
+}
+
+
+/* En movimiento reducido los sprites se quedan quietos. */
+@media (prefers-reduced-motion: reduce) {
+  .pet { animation: none; }
+}
+
+/* En pantallas chicas estorban más de lo que aportan. */
+@media (max-width: 640px) {
+  .pet { display: none; }
+}

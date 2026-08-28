@@ -4,10 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My University WebSite</title>
-    <link rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
+<!-- Pantalla del saludo. Nace oculta y solo aparece cuando el
+     botón la convierte en el :target de la URL (#hello). Va PRIMERO
+     en el documento para poder ocultar al botón con el combinador
+     de hermanos "~", que solo alcanza a los elementos siguientes.
+     Todo es CSS: ni una línea de JavaScript. -->
+<section class="intro intro-hello" id="hello" aria-label="Greeting">
+    <p class="intro-kicker">YACHAY TECH TERMINAL v2.0</p>
+    <p class="typewriter">Hola, Mundo!</p>
+    <p class="intro-hint intro-wait">entering the site&hellip;</p>
+</section>
+
+<section class="intro intro-start" id="start" aria-label="Welcome screen">
+    <a class="print-btn" href="#hello">Print</a>
+    <p class="intro-hint">or just scroll down</p>
+</section>
 
 <header>
     <a class="logo" href="index.html">
@@ -66,6 +82,8 @@
             <li>Human-Computer Interaction and <abbr title="User Interface / User Experience">UI/UX</abbr> design</li>
             <li>Automation of business processes</li>
         </ul>
+    
+        <span class="pet pet-cat" aria-hidden="true"></span>
     </section>
 
     <section id="highlights" class="section">
@@ -148,11 +166,125 @@
             </figure>
         </article>
     </section>
+<section id="projects" class="section">
+        <h2>Projects</h2>
+        <p class="section-intro">
+            Internal systems I build for RIPCONCIV, a construction company in Ecuador.
+        </p>
+    
+        <div class="projects-grid">
+    
+            <article class="card">
+                <h3>Lunch Management System</h3>
+                <p>
+                    Built entirely with plain HTML, CSS and JavaScript: no frameworks,
+                    no libraries. It registers daily lunch orders and serves three
+                    separate interfaces for kitchen staff, supervisors and
+                    administrators, each with its own permissions, replacing the
+                    monthly spreadsheet used for payroll deductions.
+                </p>
+                <p class="tags">HTML · CSS · JavaScript · SQL</p>
+                <img class="card-preview" src="assets/projects/almuerzos.jpg"
+                     alt="Access screen of the Lunch Management System, with separate tabs for the admin, supervisor and kitchen roles.">
+            </article>
+
+            <article class="card">
+                <h3><a class="card-link" href="https://gmao.ripconciv.com/login" target="_blank" rel="noopener">GMAO PROMART — Maintenance Management System</a></h3>
+                <p>
+                    A CMMS that replaced informal WhatsApp reporting with traceable work
+                    orders. Technicians open tickets with mandatory photo evidence, follow a
+                    guided flow (assign → start → execute → close with signature) and the
+                    system generates a PDF report on closing. Includes a yearly preventive
+                    maintenance matrix with compliance percentage per discipline, plus
+                    role-based access for six different user types.
+                </p>
+                <p class="tags">React · NestJS · Prisma · SQL Server · Azure</p>
+                <img class="card-preview" src="assets/projects/gmao-promart.jpg"
+                     alt="Sign-in screen of GMAO PROMART, listing its three pillars: tickets with evidence, traceable work orders and a preventive maintenance matrix.">
+            </article>
+
+            <article class="card">
+                <h3><a class="card-link" href="https://happy-stone-053fb150f.7.azurestaticapps.net/" target="_blank" rel="noopener">ObraPulse — Public Tender Intelligence</a></h3>
+                <p>
+                    A portal that extracts and tracks public-works contracts from
+                    Ecuador's public procurement system, so the company can spot tenders
+                    worth bidding on without checking the official portal by hand. It
+                    handles thousands of rows with virtualised tables, charts the
+                    results, and exports to Excel and PDF.
+                </p>
+                <p class="tags">React 19 · Python · Docker(Container Registry Azure) · MSAL</p>
+                <img class="card-preview" src="assets/projects/obrapulse.jpg"
+                     alt="Sign-in screen of ObraPulse, describing its analytics over Ecuadorian public procurement data.">
+            </article>
+
+            <article class="card">
+                <h3>Treasury Platform</h3>
+                <p>
+                    A payment-flow platform that replaces a manual spreadsheet process.
+                    I analysed the existing Excel workflow to model the database and
+                    documented the data required from the company's ERP. Corporate
+                    Microsoft 365 sign-in is already live.
+                </p>
+                <p class="tags">React · NestJS · SQL Server · MSAL</p>
+                <img class="card-preview" src="assets/projects/tesoreria.jpg"
+                     alt="Sign-in screen of the Treasury Platform, summarising traceable payment requests and approvals by level and amount.">
+            </article>
+
+            <article class="card">
+                <h3><a class="card-link" href="https://hub.ripconciv.com/" target="_blank" rel="noopener">Audiovisual Hub</a></h3>
+                <p>
+                    An internal content hub that turned scattered network folders into a
+                    searchable library of drone footage, corporate video and brand assets.
+                    Brand folders are created from the UI and mapped to real cloud storage
+                    folders, and files following a naming convention are filtered
+                    automatically by format, background and color.
+                </p>
+                <p class="tags">React · Vite · Azure Blob Storage · Entra ID</p>
+                <img class="card-preview" src="assets/projects/hub-audiovisual.jpg"
+                     alt="Projects gallery of the Audiovisual Hub, showing drone photography of construction sites with their completion status.">
+            </article>
+
+            <article class="card">
+                <h3>Cloud Backup Manager</h3>
+                <p>
+                    A Windows desktop app that automates cloud-to-cloud and
+                    local-to-cloud backups. It runs a background worker, retries
+                    transient failures, resumes interrupted uploads instead of starting
+                    over, and installs itself to run on startup. Packaged as a
+                    standalone executable.
+                </p>
+                <p class="tags">Python · PyInstaller · Windows Task Scheduler</p>
+            </article>
+
+            <article class="card">
+                <h3><a class="card-link" href="https://gmao.cfmquito.com/" target="_blank" rel="noopener">GMAO Metro de Quito</a></h3>
+                <p>
+                    A maintenance management system for the Quito Metro, built from a
+                    Figma design and a PostgreSQL data model. It covers assets,
+                    locations, work orders, phone-reported incidents, document
+                    management and a full audit trail, with end-to-end automated tests.
+                </p>
+                <p class="tags">React · PostgreSQL · Azure · Playwright</p>
+                <img class="card-preview" src="assets/projects/metro-quito.jpg"
+                     alt="Sign-in screen of the GMAO built for the Quito Metro rail consortium.">
+            </article>
+
+        </div>
+
+        <p class="section-note">
+            Hover over a card to see the application, or click its title to open the
+            live system in a new tab. The ones without a link are internal tools with
+            no public address.
+        </p>
+    
+        <span class="pet pet-fish" aria-hidden="true"></span>
+    </section>
+
 </main>
 
 <footer>
     <p>&copy; 2026 William Garzon &ndash; Yachay Tech University</p>
-    <p>Web Applications &ndash; Workshop 1 &ndash; <span lang="es">Hecho con HTML5</span></p>
+    <p>Web Applications &ndash; Workshop 2 &ndash; <span lang="es">Hecho con HTML5 y CSS</span></p>
 </footer>
 
 </body>
