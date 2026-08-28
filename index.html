@@ -3,19 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My University WebSite</title>
-    <!-- La portada vive en html/index.html, junto al resto de páginas.
-         GitHub Pages sirve desde la raíz del repositorio, así que este
-         archivo existe solo para llevar hasta ahí. El enlace de abajo
-         hace el mismo trabajo si la redirección no se ejecuta. -->
-    <meta http-equiv="refresh" content="0; url=html/index.html">
-    <link rel="canonical" href="html/index.html">
+    <title>Web Applications &ndash; Workshops 1 and 2</title>
+    <link rel="stylesheet" href="HTML+CSS/css/style.css">
 </head>
 
 <body>
-    <p>
-        Taking you to the site&hellip; If nothing happens,
-        <a href="html/index.html">open it here</a>.
-    </p>
+
+<header>
+    <div class="header-inner">
+        <a class="brand" href="index.html">
+            <img class="logo-img" src="HTML+CSS/assets/university.png"
+                 alt="Yachay Tech University logo" width="120">
+        </a>
+        <p class="site-title">Web Applications &ndash; Workshops</p>
+    </div>
+</header>
+
+<main id="main">
+
+    <section id="intro" class="section">
+        <h1>Two workshops, one site</h1>
+        <p class="meta">William Garzon &middot; Information Technology &middot; Semester II 2026</p>
+        <p>
+            The same six-page website, delivered twice. Workshop 1 is the
+            structure written in HTML5 alone. Workshop 2 is that same structure
+            with a stylesheet on top, so the two folders read as a before and
+            after of the very same markup.
+        </p>
+    </section>
+
+    <section id="workshops" class="section">
+        <h2>Open a workshop</h2>
+
+        <div class="card-grid">
+            <article>
+                <h3><a href="HTML/index.html">Workshop 1 &ndash; only HTML</a></h3>
+                <p>
+                    Six interconnected pages with no CSS and no JavaScript. The
+                    semantic elements, the schedule table with its
+                    <code>rowspan</code> and <code>colspan</code>, and the
+                    contact form with its ten input types.
+                </p>
+                <p class="tags">HTML5</p>
+            </article>
+
+            <article>
+                <h3><a href="HTML+CSS/index.html">Workshop 2 &ndash; HTML + CSS</a></h3>
+                <p>
+                    The same markup with a stylesheet: design tokens, a light
+                    and a dark theme, an image viewer and a welcome sequence,
+                    all without a single line of JavaScript.
+                </p>
+                <p class="tags">HTML5 &middot; CSS</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="repo" class="section">
+        <h2>Repository</h2>
+        <ul>
+            <li>
+                <a href="https://github.com/RecHashhh/Workshop1_ProgramacionWeb"
+                   target="_blank" rel="noopener">github.com/RecHashhh/Workshop1_ProgramacionWeb</a>
+                (opens in a new tab)
+            </li>
+            <li>
+                Each folder carries its own <code>README</code> describing what
+                the workshop contains.
+            </li>
+        </ul>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 William Garzon &ndash; Yachay Tech University</p>
+    <p>Web Applications &ndash; <span lang="es">Prof. Francisco Hidrobo</span></p>
+</footer>
+
 </body>
 </html>
