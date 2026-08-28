@@ -13,4 +13,4 @@ desktop.ini
 *.swp
 
 # Material solo para elaborar el informe, no se publica
-assets/informe/
+html/assets/informe/
