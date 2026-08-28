@@ -1418,13 +1418,26 @@ legend { font-size: 0.76rem; }
    Cinco bloques seguidos son mucho formulario de golpe: se ve una
    pared vertical y no se sabe cuánto falta. En dos columnas se
    abarca de una mirada. */
+/* Dos columnas agrupadas por sentido, no partidas a la mitad: a la
+   izquierda quién eres, a la derecha qué necesitas. Cada columna
+   apila sus propios bloques, así que no quedan huecos cuando uno es
+   más corto que el otro. Con la retícula plana anterior la fila
+   tomaba la altura del bloque más alto y dejaba un vacío debajo del
+   corto. */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: 0 1.5rem;
+  gap: 0 1.75rem;
   align-items: start;
 }
+.form-col { display: flex; flex-direction: column; }
 .form-grid fieldset { margin-bottom: 1.25rem; }
+
+/* Los campos ocupan su columna, en vez de quedarse cortos dentro de
+   ella con el resto en blanco. */
+.form-col input:not([type="radio"]):not([type="checkbox"]),
+.form-col select,
+.form-col textarea { max-width: 100%; }
 
 /* ══════════════════════════════════════════════════════════════
    MICRO-INTERACCIONES

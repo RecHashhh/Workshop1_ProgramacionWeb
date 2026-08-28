@@ -55,130 +55,132 @@
         <form action="#" method="post">
 
             <div class="form-grid">
-                <fieldset>
-                <legend>Personal information</legend>
-
-                <p>
-                    <label for="fullname">Full name:</label>
-                    <input type="text" id="fullname" name="fullname"
-                           placeholder="First and last name" required>
-                </p>
-
-                <p>
-                    <label for="email">Email address:</label>
-                    <input type="email" id="email" name="email"
-                           placeholder="name@yachaytech.edu.ec" required>
-                </p>
-
-                <p>
-                    <label for="birthdate">Date of birth:</label>
-                    <input type="date" id="birthdate" name="birthdate" required>
-                </p>
-
-                <p>
-                    <label for="idnumber">National ID number:</label>
-                    <input type="text" id="idnumber" name="idnumber"
-                           maxlength="10" placeholder="1000000000">
-                </p>
-
-                <p>
-                    <label for="phone">Phone number (optional):</label>
-                    <input type="tel" id="phone" name="phone"
-                           placeholder="099 999 9999">
-                </p>
-            </fieldset>
-
-            <fieldset>
-                <legend>Academic information</legend>
-
-                <p>
-                    <label for="program">Degree program:</label>
-                    <select id="program" name="program" required>
-                        <option value="">-- Select a program --</option>
-                        <option value="it">Information Technology</option>
-                        <option value="math">Mathematics</option>
-                        <option value="physics">Physics</option>
-                        <option value="biology">Biology</option>
-                        <option value="chemistry">Chemistry</option>
-                        <option value="geology">Geology</option>
-                        <option value="nano">Nanotechnology</option>
-                        <option value="agro">Agricultural Sciences</option>
-                    </select>
-                </p>
-
-                <p>
-                    <label for="semester">Semester:</label>
-                    <input type="number" id="semester" name="semester"
-                           min="1" max="10" step="1" required>
-                </p>
-
-            </fieldset>
-
-            <fieldset>
-                <legend>Reason for contact</legend>
-
-                <p>
-                    <input type="radio" id="reason-records" name="reason"
-                           value="records" checked>
-                    <label for="reason-records">Academic records and certificates</label>
-                </p>
-                <p>
-                    <input type="radio" id="reason-enrollment" name="reason" value="enrollment">
-                    <label for="reason-enrollment">Enrollment and course registration</label>
-                </p>
-                <p>
-                    <input type="radio" id="reason-scholarship" name="reason" value="scholarship">
-                    <label for="reason-scholarship">Scholarships and financial aid</label>
-                </p>
-                <p>
-                    <input type="radio" id="reason-housing" name="reason" value="housing">
-                    <label for="reason-housing">Student housing</label>
-                </p>
-                <p>
-                    <input type="radio" id="reason-support" name="reason" value="support">
-                    <label for="reason-support">Technical support</label>
-                </p>
-                <p>
-                    <input type="radio" id="reason-other" name="reason" value="other">
-                    <label for="reason-other">Other</label>
-                </p>
-            </fieldset>
-
-            <fieldset>
-                <legend>Your message</legend>
-
-                <p>
-                    <label for="subject">Subject:</label>
-                    <input type="text" id="subject" name="subject"
-                           maxlength="80" required>
-                </p>
-
-                <p>
-                    <label for="message">Message:</label>
-                    <br>
-                    <textarea id="message" name="message" rows="8" cols="50"
-                              placeholder="Describe your request in detail..." required></textarea>
-                </p>
-
-                <p>
-                    <label for="attachment">Attach a document (optional):</label>
-                    <input type="file" id="attachment" name="attachment">
-                </p>
-
-                <p>
-                    <label for="urgency">Urgency:</label>
-                    <select id="urgency" name="urgency">
-                        <option value="low">Low &ndash; no rush</option>
-                        <option value="medium" selected>Medium &ndash; within a few days</option>
-                        <option value="high">High &ndash; needs attention today</option>
-                    </select>
-                </p>
-
-                <p>
-                    <label for="preferred">Preferred answer date:</label>
-                    <input type="date" id="preferred" name="preferred">
-                </p>
-            </fieldset>
+                <div class="form-col">
+                    <fieldset>
+                    <legend>Personal information</legend>
+    
+                    <p>
+                        <label for="fullname">Full name:</label>
+                        <input type="text" id="fullname" name="fullname"
+                               placeholder="First and last name" required>
+                    </p>
+    
+                    <p>
+                        <label for="email">Email address:</label>
+                        <input type="email" id="email" name="email"
+                               placeholder="name@yachaytech.edu.ec" required>
+                    </p>
+    
+                    <p>
+                        <label for="birthdate">Date of birth:</label>
+                        <input type="date" id="birthdate" name="birthdate" required>
+                    </p>
+    
+                    <p>
+                        <label for="idnumber">National ID number:</label>
+                        <input type="text" id="idnumber" name="idnumber"
+                               maxlength="10" placeholder="1000000000">
+                    </p>
+    
+                    <p>
+                        <label for="phone">Phone number (optional):</label>
+                        <input type="tel" id="phone" name="phone"
+                               placeholder="099 999 9999">
+                    </p>
+                </fieldset>
+                    <fieldset>
+                    <legend>Academic information</legend>
+    
+                    <p>
+                        <label for="program">Degree program:</label>
+                        <select id="program" name="program" required>
+                            <option value="">-- Select a program --</option>
+                            <option value="it">Information Technology</option>
+                            <option value="math">Mathematics</option>
+                            <option value="physics">Physics</option>
+                            <option value="biology">Biology</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="geology">Geology</option>
+                            <option value="nano">Nanotechnology</option>
+                            <option value="agro">Agricultural Sciences</option>
+                        </select>
+                    </p>
+    
+                    <p>
+                        <label for="semester">Semester:</label>
+                        <input type="number" id="semester" name="semester"
+                               min="1" max="10" step="1" required>
+                    </p>
+    
+                </fieldset>
+                </div>
+                <div class="form-col">
+                    <fieldset>
+                    <legend>Reason for contact</legend>
+    
+                    <p>
+                        <input type="radio" id="reason-records" name="reason"
+                               value="records" checked>
+                        <label for="reason-records">Academic records and certificates</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="reason-enrollment" name="reason" value="enrollment">
+                        <label for="reason-enrollment">Enrollment and course registration</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="reason-scholarship" name="reason" value="scholarship">
+                        <label for="reason-scholarship">Scholarships and financial aid</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="reason-housing" name="reason" value="housing">
+                        <label for="reason-housing">Student housing</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="reason-support" name="reason" value="support">
+                        <label for="reason-support">Technical support</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="reason-other" name="reason" value="other">
+                        <label for="reason-other">Other</label>
+                    </p>
+                </fieldset>
+                    <fieldset>
+                    <legend>Your message</legend>
+    
+                    <p>
+                        <label for="subject">Subject:</label>
+                        <input type="text" id="subject" name="subject"
+                               maxlength="80" required>
+                    </p>
+    
+                    <p>
+                        <label for="message">Message:</label>
+                        <br>
+                        <textarea id="message" name="message" rows="8" cols="50"
+                                  placeholder="Describe your request in detail..." required></textarea>
+                    </p>
+    
+                    <p>
+                        <label for="attachment">Attach a document (optional):</label>
+                        <input type="file" id="attachment" name="attachment">
+                    </p>
+    
+                    <p>
+                        <label for="urgency">Urgency:</label>
+                        <select id="urgency" name="urgency">
+                            <option value="low">Low &ndash; no rush</option>
+                            <option value="medium" selected>Medium &ndash; within a few days</option>
+                            <option value="high">High &ndash; needs attention today</option>
+                        </select>
+                    </p>
+    
+                    <p>
+                        <label for="preferred">Preferred answer date:</label>
+                        <input type="date" id="preferred" name="preferred">
+                    </p>
+                </fieldset>
+                </div>
+            </div>
 
             <fieldset>
                 <legend>Confirmation</legend>
@@ -198,7 +200,6 @@
                     </label>
                 </p>
             </fieldset>
-            </div>
 
             <p>
                 <button type="submit">Send request</button>
