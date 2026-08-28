@@ -725,7 +725,10 @@ tfoot td {
 }
 
 /* ── FORMULARIO ───────────────────────────────────────────────── */
-form { max-width: 44rem; }
+/* El formulario usa el ancho del panel. Con 44rem quedaba un tercio
+   del contenedor en blanco a la derecha. Los campos individuales sí
+   siguen acotados: un input de 60rem de ancho no ayuda a nadie. */
+form { max-width: none; }
 
 fieldset {
   border: 2px solid var(--border-hi);
@@ -788,7 +791,7 @@ input[type="checkbox"] {
 
 input[type="file"] { padding: 0.3rem; }
 
-textarea { max-width: 36rem; resize: vertical; font-family: var(--font-px); }
+textarea { max-width: 100%; resize: vertical; font-family: var(--font-px); }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
