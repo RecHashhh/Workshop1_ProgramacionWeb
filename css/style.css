@@ -78,7 +78,11 @@
   --transition:  0.15s ease;
 
   /* Medidas */
-  --max-width:   1440px;
+  /* 1280px: a 1440 la columna de texto (68 caracteres, que es el
+     ancho legible) dejaba media pantalla vacía. Ensanchar el texto
+     no era opción —se lee peor—, así que se ajusta el contenedor y
+     el espacio restante lo ocupa la columna lateral. */
+  --max-width:   1280px;
   --measure:     68ch;
   --font-body:   'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-px:     'Courier New', 'Consolas', ui-monospace, monospace;
@@ -538,33 +542,22 @@ figcaption {
 }
 .projects-grid .card { margin-bottom: 0; }
 
-/* Captura de la aplicación: cubre la tarjeta al pasar el mouse.
-   `position: absolute` la saca del flujo, así que aparecer y
-   desaparecer NO mueve nada de sitio: cero salto de layout.
-   `:focus-within` hace lo mismo con el teclado, para quien navega
-   con Tab y nunca pasa un mouse por encima. */
-.card-preview {
-  position: absolute;
-  inset: 0;
+/* La captura pasó a ser una miniatura visible dentro de la tarjeta.
+   Antes era una capa que aparecía en hover y cubría la tarjeta
+   entera: tapaba justo el título que uno quería pulsar, y la foto
+   solo existía mientras el mouse estuviera encima, así que con
+   teclado o en una pantalla táctil no había forma de verla. */
+.card-shot {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* Fondo oscuro: la captura casi nunca tiene la proporción de la
-     tarjeta, así que en vez de recortarla se muestra entera. Se
-     lee como un visor, no como un hueco. */
-  background: #14161f;
-  padding: 0.6rem;
-  opacity: 0;
-  transform: scale(1.04);
-  transition: opacity 0.25s ease, transform 0.35s ease;
-  pointer-events: none;   /* que no bloquee el hover de la tarjeta */
-}
-
-.card:hover .card-preview,
-.card:focus .card-preview,
-.card:focus-within .card-preview {
-  opacity: 1;
-  transform: scale(1);
+  /* Proporción fija: todas las miniaturas ocupan lo mismo aunque las
+     capturas tengan tamaños distintos, y la fila no se descuadra. */
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid var(--border-hi);
+  background: var(--bg3);
+  margin-bottom: 0.9rem;
 }
 
 /* El título de cada proyecto es un enlace al sistema en vivo. Eso
@@ -692,9 +685,9 @@ tbody th {
    `.timetable td[rowspan]` (0,2,1), si no el tinte genérico las
    gana y el horario vuelve a salir todo del mismo rojo. Al empatar
    en especificidad decide el orden, y estas van después. */
-table td.c-web,
-table td.c-stoch,
-table td.c-phys { color: var(--text); font-weight: 600; }
+.timetable td.c-web,   .sessions td.c-web,
+.timetable td.c-stoch, .sessions td.c-stoch,
+.timetable td.c-phys,  .sessions td.c-phys { color: var(--text); font-weight: 600; }
 
 /* En la tabla de sesiones el color va solo en la columna del curso:
    hace de identificador de la fila sin repintar datos que no
@@ -706,9 +699,12 @@ table td.c-phys { color: var(--text); font-weight: 600; }
   color: var(--text-dim);
 }
 
-table td.c-web   { background: var(--sub-web-bg);   border: 2px solid var(--sub-web-bd); }
-table td.c-stoch { background: var(--sub-stoch-bg); border: 2px solid var(--sub-stoch-bd); }
-table td.c-phys  { background: var(--sub-phys-bg);  border: 2px solid var(--sub-phys-bd); }
+.timetable td.c-web,   .sessions td.c-web
+  { background: var(--sub-web-bg);   border: 2px solid var(--sub-web-bd); }
+.timetable td.c-stoch, .sessions td.c-stoch
+  { background: var(--sub-stoch-bg); border: 2px solid var(--sub-stoch-bd); }
+.timetable td.c-phys,  .sessions td.c-phys
+  { background: var(--sub-phys-bg);  border: 2px solid var(--sub-phys-bd); }
 
 /* En la ficha de cada curso el color va en una franja superior:
    identifica la materia sin teñir el texto, que debe seguir siendo
@@ -1360,4 +1356,96 @@ footer p {
   color: var(--bg2);
   background: var(--accent);
   padding: 0.1rem 0.4rem;
+}
+
+/* La miniatura queda por encima del área de clic de la tarjeta, para
+   que pulsarla abra el visor y no el sitio del proyecto. El resto de
+   la tarjeta sigue llevando al sistema en vivo. */
+.projects-grid .zoom-trigger { position: relative; z-index: 3; }
+
+/* Cada tarjeta de proyecto es una fila de altura pareja: la rejilla
+   estira las tarjetas y las etiquetas quedan al pie. */
+.projects-grid .card { display: flex; flex-direction: column; }
+.projects-grid .card .tags { margin-top: auto; }
+
+/* ── LA BIENVENIDA, UNA SOLA VEZ ──────────────────────────────
+   La pantalla del botón solo aparece cuando se llega al sitio sin
+   fragmento en la URL, es decir en la primera visita. En cuanto hay
+   cualquier :target activo —el saludo, una foto abierta, o el #home
+   al que apunta el menú— la bienvenida se retira y no vuelve a
+   interrumpir la navegación.
+
+   `:has()` es lo que permite mirar hacia dentro del documento desde
+   un ancestro; sin él no habría forma de expresar esto en CSS. */
+body:has(:target) .intro-start { display: none; }
+
+/* ── NAVEGACIÓN CRUZADA ───────────────────────────────────────
+   Las celdas del horario llevan a la ficha del curso. El enlace
+   ocupa la celda entera para que el área de clic sea toda la caja,
+   no solo el texto. */
+.cell-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  margin: -0.45rem -0.6rem;
+  padding: 0.45rem 0.6rem;
+}
+.cell-link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.cell-link:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+
+/* Aviso de que una sección conecta con otra página. */
+.section-hint {
+  font-family: var(--font-px);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.section-hint::before { content: "> "; color: var(--accent); }
+
+.course-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.btn-sm {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.8rem;
+  margin-top: 0;
+  box-shadow: 3px 3px 0 var(--accent);
+}
+.btn-sm:hover, .btn-sm:focus-visible { transform: translate(3px, 3px); }
+
+/* ── FICHA DE CURSO EN DOS COLUMNAS ───────────────────────────
+   El problema anterior: el párrafo se limitaba a 68 caracteres para
+   que fuera legible, pero la sección medía 1440px, así que media
+   página quedaba vacía. La solución no es ensanchar el texto —eso
+   lo haría más difícil de leer— sino poner algo útil al lado.
+
+   Columna izquierda: lo que se lee de corrido.
+   Columna derecha: los datos que se consultan de un vistazo. */
+.course-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 19rem);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.course-main > *:first-child { margin-top: 0; }
+.course-main h3 { margin-top: 1.75rem; }
+
+.course-side {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  padding: 1.1rem 1.25rem;
+  position: sticky;
+  top: 6rem;
+}
+.course-side h3 { margin-top: 1.25rem; font-size: 0.95rem; }
+.course-side > *:first-child { margin-top: 0; }
+.course-side p, .course-side ul { max-width: none; font-size: 0.92rem; }
+
+@media (max-width: 900px) {
+  .course-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .course-side { position: static; }
 }
