@@ -13,15 +13,6 @@
    párrafos largos y la monoespaciada cansa a esa longitud.
    ══════════════════════════════════════════════════════════════ */
 
-/* Silkscreen: tipografía de mapa de bits real, para los momentos en
-   que el sitio habla como una consola. Se pide a Google Fonts porque
-   no se puede empaquetar aquí; si no hay red, el navegador cae a
-   Courier New y la página conserva su forma, solo pierde el grano.
-   Por eso el pixel va en las etiquetas y los títulos, nunca en el
-   texto corrido: una bitmap a 16px es preciosa y también ilegible
-   en un párrafo de cinco líneas. */
-@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
-
 
 /* ── RESET ────────────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -96,8 +87,6 @@
   --measure:     68ch;
   --font-body:   'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-px:     'Courier New', 'Consolas', ui-monospace, monospace;
-  /* La bitmap solo para rótulos y titulares. */
-  --font-bit:    'Silkscreen', 'Courier New', monospace;
   --gold:        #c9a63a;
 }
 
@@ -146,17 +135,24 @@ body {
 
 /* Los títulos son el acento pixel: monoespaciada, en versalitas,
    con separación de letras y un prefijo ">" que imita un prompt. */
+/* Los títulos usan la tipografía de texto, no la monoespaciada. Una
+   monoespaciada en un titular de tres palabras se lee como código, no
+   como jerarquía: las letras quedan sueltas y el título pierde peso
+   frente al párrafo. La monoespaciada se reserva para lo que de
+   verdad es dato: rótulos, horas, códigos de curso y cabeceras de
+   tabla. */
 h1, h2, h3 {
-  font-family: var(--font-px);
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: var(--font-body);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   color: var(--text);
   text-wrap: balance;
 }
 
-h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 0.75rem; }
-h2 { font-size: 1.35rem; margin-bottom: 0.75rem; }
-h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+h1 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); margin-bottom: 0.85rem; }
+h2 { font-size: 1.5rem; margin-bottom: 0.8rem; }
+h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 0.5rem; }
 
 p  { color: var(--text-dim); max-width: var(--measure); margin-bottom: 1rem; }
 p:last-child { margin-bottom: 0; }
@@ -459,13 +455,6 @@ main {
   margin-bottom: 1.5rem;
 }
 
-/* El prompt ">" delante de cada título de sección. Se genera con
-   CSS, no está en el HTML: la decoración no ensucia el marcado. */
-.section > h1::before,
-.section > h2::before {
-  content: "> ";
-  color: var(--accent);
-}
 
 .section h3 { margin-top: 1.5rem; }
 .section h3:first-of-type { margin-top: 0.5rem; }
@@ -486,7 +475,6 @@ main {
   color: var(--text-dim);
   margin-bottom: 1rem;
 }
-.meta::before { content: "$ "; color: var(--accent); }
 
 /* ── HERO ─────────────────────────────────────────────────────── */
 .hero {
@@ -618,7 +606,6 @@ figcaption {
   transform: translate(-2px, -2px);
 }
 .card h3 { color: var(--text); }
-.card h3::before { content: "# "; color: var(--accent); }
 
 /* ── TABLAS ───────────────────────────────────────────────────
    El HTML lleva border="1" porque el Workshop 1 lo permitía para
@@ -1413,7 +1400,6 @@ body:has(:target) .intro-start { display: none; }
   color: var(--text-dim);
   margin-bottom: 1rem;
 }
-.section-hint::before { content: "> "; color: var(--accent); }
 
 .course-jump {
   display: flex;
@@ -1472,111 +1458,24 @@ body:has(:target) .intro-start { display: none; }
    y rótulos de consola.
    ══════════════════════════════════════════════════════════════ */
 
-/* ── BARRA DE ESTADO ──────────────────────────────────────────
-   Una tira fina bajo el encabezado, siempre presente, que dice
-   quién juega, en qué nivel va y en qué zona está. Es el único
-   elemento que se repite idéntico en las seis páginas, y por eso
-   es el que da continuidad al recorrido. */
-.hud {
-  background: var(--text);
-  color: var(--bg2);
-  border-bottom: 3px solid var(--accent);
-}
-.hud-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0.4rem 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 1.5rem;
-  font-family: var(--font-bit);
-  font-size: 0.6rem;
-  letter-spacing: 0.06em;
-}
-.hud-slot { display: flex; align-items: center; gap: 0.45rem; }
-.hud-key { color: var(--bg3); }
-.hud-val { color: var(--bg2); }
-.hud-zone { margin-left: auto; color: var(--accent-dim); }
 
-/* Barra de progreso del semestre. Diez bloques, uno por semestre,
-   rellenos hasta el actual: la misma lectura que una barra de vida. */
-.hud-bar {
-  display: inline-flex;
-  gap: 2px;
-  vertical-align: middle;
-}
-.hud-bar i {
-  width: 6px;
-  height: 10px;
-  background: var(--bg3);
-  opacity: 0.35;
-}
-.hud-bar i.on { background: var(--accent); opacity: 1; }
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .hud { background: var(--bg3); color: var(--text); }
-  :root:not([data-theme="light"]) .hud-key { color: var(--muted, var(--text-dim)); }
-  :root:not([data-theme="light"]) .hud-val { color: var(--text); }
-}
-
-/* ── MARCO DE CAJA ────────────────────────────────────────────
-   Las esquinas recortadas de una caja de diálogo de 8 bits. Se
-   dibujan con gradientes cónicos sobre el propio borde: sin
-   imágenes, sin pseudo-elementos extra, y se adaptan solas al
-   color del tema. */
-.section {
-  position: relative;
-  --nub: 10px;
-}
-.section::before,
-.section::after {
-  content: "";
-  position: absolute;
-  width: var(--nub);
-  height: var(--nub);
-  background: var(--accent);
-  pointer-events: none;
-}
-.section::before { top: -2px; left: -2px; clip-path: polygon(0 0, 100% 0, 0 100%); }
-.section::after  { bottom: -2px; right: -2px; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
 
 /* ── RÓTULOS DE CONSOLA ───────────────────────────────────────
    Los títulos de sección hablan como un menú de juego. El prefijo
    ">" ya estaba; ahora la tipografía lo acompaña. */
-.section > h1,
-.section > h2 {
-  font-family: var(--font-bit);
-  letter-spacing: 0.02em;
-  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
-  line-height: 1.5;
-}
-.section > h1 { font-size: clamp(1.1rem, 3vw, 1.5rem); }
 
 .site-title, .nav-list a, .lb-count, .hud, .tags,
 .intro-kicker, .intro-hint, .print-btn, .btn, button, legend {
-  font-family: var(--font-bit);
+  font-family: var(--font-px);
 }
-.nav-list a { font-size: 0.65rem; letter-spacing: 0.02em; }
-.site-title { font-size: 0.8rem; letter-spacing: 0.02em; }
-.print-btn { letter-spacing: 0.02em; }
-.btn, button { font-size: 0.65rem; letter-spacing: 0.02em; }
-legend { font-size: 0.62rem; }
-.tags { font-size: 0.58rem; line-height: 1.9; }
-.lb-count { font-size: 0.6rem; }
+.nav-list a { font-size: 0.78rem; letter-spacing: 0.05em; }
+.site-title { font-size: 1.02rem; letter-spacing: 0.07em; }
+.print-btn { letter-spacing: 0.1em; }
+.btn, button { font-size: 0.78rem; letter-spacing: 0.06em; }
+legend { font-size: 0.76rem; }
+.tags { font-size: 0.72rem; line-height: 1.7; }
+.lb-count { font-size: 0.74rem; }
 
-/* ── ETIQUETA DE ZONA ─────────────────────────────────────────
-   Cada página anuncia qué es dentro del lenguaje del juego. */
-.zone-tag {
-  display: inline-block;
-  font-family: var(--font-bit);
-  font-size: 0.58rem;
-  letter-spacing: 0.06em;
-  color: var(--bg2);
-  background: var(--accent);
-  padding: 0.3rem 0.6rem;
-  margin-bottom: 0.9rem;
-}
 
 /* ── PANTALLA DE INICIO: CRT ──────────────────────────────────
    Las líneas de barrido de un monitor de tubo. Van solo aquí: es
@@ -1601,7 +1500,56 @@ legend { font-size: 0.62rem; }
 }
 
 @media (max-width: 640px) {
-  .hud-inner { padding: 0.35rem 0.9rem; font-size: 0.52rem; gap: 0.3rem 0.9rem; }
-  .hud-zone { margin-left: 0; }
-  .nav-list a { font-size: 0.55rem; }
+  .nav-list a { font-size: 0.7rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   JERARQUÍA DE PÁGINA
+   Antes cada sección era la misma caja blanca, así que el título de
+   la página pesaba lo mismo que una materia cualquiera. Ahora la
+   cabecera es una banda sin caja y el contenido son las cajas: la
+   diferencia de forma dice cuál es cuál antes de leer nada.
+   ══════════════════════════════════════════════════════════════ */
+
+.section#intro {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0 1.75rem;
+  border-bottom: 3px solid var(--accent);
+  margin-bottom: 2rem;
+}
+.section#intro h1 { max-width: 22ch; }
+.section#intro > p { font-size: 1.06rem; }
+.section#intro .meta { margin-bottom: 0.6rem; }
+
+/* ── CABECERA DE MATERIA ──────────────────────────────────────
+   El color de la asignatura pasa de una franja de 6px a la cabecera
+   entera. Con tres materias en la misma página, distinguirlas tiene
+   que costar una mirada, no una lectura. El código del curso sigue
+   escrito, así que el color acompaña al dato sin sustituirlo. */
+.course-head {
+  margin: -1.5rem -1.5rem 1.5rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 2px solid var(--border-hi);
+}
+.course-head h2 { margin-bottom: 0.35rem; }
+.course-head .meta { margin-bottom: 0; opacity: 0.85; }
+
+.c-web   .course-head { background: var(--sub-web-bg);   border-bottom-color: var(--sub-web-bd); }
+.c-stoch .course-head { background: var(--sub-stoch-bg); border-bottom-color: var(--sub-stoch-bd); }
+.c-phys  .course-head { background: var(--sub-phys-bg);  border-bottom-color: var(--sub-phys-bd); }
+
+/* La franja superior sobra: el color ya está en la cabecera. */
+.section.c-web, .section.c-stoch, .section.c-phys { border-top-width: 2px; }
+.section.c-web   { border-top-color: var(--border); }
+.section.c-stoch { border-top-color: var(--border); }
+.section.c-phys  { border-top-color: var(--border); }
+
+/* ── COLUMNAS SIN HUECO ───────────────────────────────────────
+   La columna de texto se detiene en su ancho legible y la lateral
+   se le pega, en vez de irse al borde opuesto de la sección. */
+.course-grid {
+  grid-template-columns: minmax(0, 40rem) minmax(0, 19rem);
+  justify-content: start;
+  gap: 2rem;
 }
