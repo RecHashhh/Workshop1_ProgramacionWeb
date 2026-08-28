@@ -1400,7 +1400,10 @@ legend { font-size: 0.76rem; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
   gap: 1.25rem;
-  align-items: start;
+  /* stretch, no start: con textos de largo distinto las tarjetas de
+     una misma fila terminaban a alturas distintas y el borde inferior
+     quedaba escalonado. */
+  align-items: stretch;
 }
 .card-grid > article {
   background: var(--bg);
@@ -1464,3 +1467,49 @@ input:hover, select:hover, textarea:hover { border-color: var(--text-dim); }
 @media (prefers-reduced-motion: reduce) {
   .card-grid > article:hover { transform: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   TEXTO JUNTO A IMAGEN
+   El problema no era el peso de las fotos sino el orden: la figura
+   ocupaba el ancho entero debajo del párrafo, así que la página
+   crecía hacia abajo mientras la mitad derecha quedaba vacía. Varias
+   de estas fotos son verticales (1000x1500), y a 520px de ancho eso
+   son 780px de alto por figura.
+   ══════════════════════════════════════════════════════════════ */
+.media-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  gap: 2rem;
+  align-items: start;
+}
+.media-split > figure { margin: 0; }
+.media-split .media-text > *:first-child { margin-top: 0; }
+
+@media (max-width: 860px) {
+  .media-split { grid-template-columns: 1fr; }
+  .media-split > figure { max-width: 26rem; }
+}
+
+/* Tope de altura para las figuras sueltas. Sin él, una foto vertical
+   empuja el resto de la página fuera de la pantalla. `width: auto`
+   conserva la proporción: la imagen se encoge, no se deforma. */
+figure img {
+  max-height: 26rem;
+  width: auto;
+}
+.media-split > figure img { max-height: 22rem; }
+
+/* En las retículas las miniaturas comparten proporción, para que las
+   filas queden parejas aunque las fotos originales no lo estén. */
+.card-grid figure img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  max-height: none;
+}
+
+/* El visor no hereda el tope: ahí la foto sí debe verse entera. */
+.lb-frame img { max-height: 78vh; }
+.lb-zoom-state:checked ~ .lb-frame img { max-height: none; }
