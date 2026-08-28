@@ -893,222 +893,6 @@ footer p {
 }
 
 
-/* ══════════════════════════════════════════════════════════════
-   ANIMALITOS PIXEL
-   Dibujados con CSS puro: un solo elemento de 3px al que se le
-   apilan decenas de `box-shadow`, uno por cada píxel encendido.
-   No hay imágenes, ni fuentes de iconos, ni SVG — solo sombras.
-
-   Son decoración: van en `aria-hidden` y no aportan información,
-   así que un lector de pantalla los ignora por completo.
-   ══════════════════════════════════════════════════════════════ */
-
-.pet {
-  display: block;
-  width: 3px;
-  height: 3px;
-  margin: 0.75rem 0 0 auto;
-  /* La sombra dibuja hacia la derecha y hacia abajo desde el punto
-     de origen, así que el propio elemento queda transparente. */
-  background: transparent;
-}
-
-/* Flota apenas: dos pasos discretos, no un movimiento continuo.
-   Un sprite de 8 bits no se desliza, salta. */
-@keyframes hop {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
-}
-.pet { animation: hop 1.8s steps(2, end) infinite; }
-
-
-.pet-cat {
-  width: 3px; height: 3px;
-  box-shadow:
-    3px 0px 0 var(--accent),
-    21px 0px 0 var(--accent),
-    3px 3px 0 var(--accent),
-    6px 3px 0 var(--accent),
-    18px 3px 0 var(--accent),
-    21px 3px 0 var(--accent),
-    3px 6px 0 var(--accent),
-    6px 6px 0 var(--accent),
-    9px 6px 0 var(--accent),
-    12px 6px 0 var(--accent),
-    15px 6px 0 var(--accent),
-    18px 6px 0 var(--accent),
-    21px 6px 0 var(--accent),
-    3px 9px 0 var(--accent),
-    6px 9px 0 #ffffff,
-    9px 9px 0 var(--accent),
-    12px 9px 0 var(--accent),
-    15px 9px 0 var(--accent),
-    18px 9px 0 #ffffff,
-    21px 9px 0 var(--accent),
-    3px 12px 0 var(--accent),
-    6px 12px 0 var(--accent),
-    9px 12px 0 var(--accent),
-    12px 12px 0 var(--accent),
-    15px 12px 0 var(--accent),
-    18px 12px 0 var(--accent),
-    21px 12px 0 var(--accent),
-    3px 15px 0 var(--accent),
-    9px 15px 0 var(--accent),
-    12px 15px 0 var(--accent),
-    15px 15px 0 var(--accent),
-    21px 15px 0 var(--accent),
-    6px 18px 0 var(--accent),
-    9px 18px 0 var(--accent),
-    12px 18px 0 var(--accent),
-    15px 18px 0 var(--accent),
-    18px 18px 0 var(--accent),
-    9px 21px 0 var(--accent),
-    15px 21px 0 var(--accent);
-}
-
-.pet-bird {
-  width: 3px; height: 3px;
-  box-shadow:
-    9px 0px 0 var(--accent),
-    12px 0px 0 var(--accent),
-    15px 0px 0 var(--accent),
-    6px 3px 0 var(--accent),
-    9px 3px 0 var(--accent),
-    12px 3px 0 var(--accent),
-    15px 3px 0 var(--accent),
-    18px 3px 0 var(--accent),
-    3px 6px 0 var(--accent),
-    6px 6px 0 var(--accent),
-    9px 6px 0 #ffffff,
-    12px 6px 0 var(--accent),
-    15px 6px 0 var(--accent),
-    18px 6px 0 var(--accent),
-    21px 6px 0 var(--accent),
-    0px 9px 0 var(--accent),
-    3px 9px 0 var(--accent),
-    6px 9px 0 var(--accent),
-    9px 9px 0 var(--accent),
-    12px 9px 0 var(--accent),
-    15px 9px 0 var(--accent),
-    18px 9px 0 var(--accent),
-    21px 9px 0 #ffffff,
-    3px 12px 0 var(--accent),
-    6px 12px 0 var(--accent),
-    9px 12px 0 var(--accent),
-    12px 12px 0 var(--accent),
-    15px 12px 0 var(--accent),
-    18px 12px 0 var(--accent),
-    6px 15px 0 var(--accent),
-    9px 15px 0 var(--accent),
-    12px 15px 0 var(--accent),
-    15px 15px 0 var(--accent),
-    9px 18px 0 var(--accent),
-    15px 18px 0 var(--accent);
-}
-
-.pet-ghost {
-  width: 3px; height: 3px;
-  box-shadow:
-    6px 0px 0 var(--border-hi),
-    9px 0px 0 var(--border-hi),
-    12px 0px 0 var(--border-hi),
-    15px 0px 0 var(--border-hi),
-    3px 3px 0 var(--border-hi),
-    6px 3px 0 var(--border-hi),
-    9px 3px 0 var(--border-hi),
-    12px 3px 0 var(--border-hi),
-    15px 3px 0 var(--border-hi),
-    18px 3px 0 var(--border-hi),
-    0px 6px 0 var(--border-hi),
-    3px 6px 0 var(--border-hi),
-    6px 6px 0 var(--bg2),
-    9px 6px 0 var(--border-hi),
-    12px 6px 0 var(--border-hi),
-    15px 6px 0 var(--bg2),
-    18px 6px 0 var(--border-hi),
-    21px 6px 0 var(--border-hi),
-    0px 9px 0 var(--border-hi),
-    3px 9px 0 var(--border-hi),
-    6px 9px 0 var(--border-hi),
-    9px 9px 0 var(--border-hi),
-    12px 9px 0 var(--border-hi),
-    15px 9px 0 var(--border-hi),
-    18px 9px 0 var(--border-hi),
-    21px 9px 0 var(--border-hi),
-    0px 12px 0 var(--border-hi),
-    3px 12px 0 var(--border-hi),
-    6px 12px 0 var(--border-hi),
-    9px 12px 0 var(--border-hi),
-    12px 12px 0 var(--border-hi),
-    15px 12px 0 var(--border-hi),
-    18px 12px 0 var(--border-hi),
-    21px 12px 0 var(--border-hi),
-    0px 15px 0 var(--border-hi),
-    3px 15px 0 var(--border-hi),
-    6px 15px 0 var(--border-hi),
-    9px 15px 0 var(--border-hi),
-    12px 15px 0 var(--border-hi),
-    15px 15px 0 var(--border-hi),
-    18px 15px 0 var(--border-hi),
-    21px 15px 0 var(--border-hi),
-    0px 18px 0 var(--border-hi),
-    6px 18px 0 var(--border-hi),
-    9px 18px 0 var(--border-hi),
-    15px 18px 0 var(--border-hi),
-    18px 18px 0 var(--border-hi);
-}
-
-.pet-fish {
-  width: 3px; height: 3px;
-  box-shadow:
-    6px 0px 0 var(--accent),
-    9px 0px 0 var(--accent),
-    12px 0px 0 var(--accent),
-    15px 0px 0 var(--accent),
-    24px 0px 0 var(--accent),
-    3px 3px 0 var(--accent),
-    6px 3px 0 var(--accent),
-    9px 3px 0 var(--accent),
-    12px 3px 0 var(--accent),
-    15px 3px 0 var(--accent),
-    18px 3px 0 var(--accent),
-    24px 3px 0 var(--accent),
-    27px 3px 0 var(--accent),
-    0px 6px 0 var(--accent),
-    3px 6px 0 var(--accent),
-    6px 6px 0 #ffffff,
-    9px 6px 0 var(--accent),
-    12px 6px 0 var(--accent),
-    15px 6px 0 var(--accent),
-    18px 6px 0 var(--accent),
-    21px 6px 0 var(--accent),
-    24px 6px 0 var(--accent),
-    27px 6px 0 var(--accent),
-    3px 9px 0 var(--accent),
-    6px 9px 0 var(--accent),
-    9px 9px 0 var(--accent),
-    12px 9px 0 var(--accent),
-    15px 9px 0 var(--accent),
-    18px 9px 0 var(--accent),
-    24px 9px 0 var(--accent),
-    27px 9px 0 var(--accent),
-    6px 12px 0 var(--accent),
-    9px 12px 0 var(--accent),
-    12px 12px 0 var(--accent),
-    15px 12px 0 var(--accent),
-    24px 12px 0 var(--accent);
-}
-
-
-/* En movimiento reducido los sprites se quedan quietos. */
-@media (prefers-reduced-motion: reduce) {
-  .pet { animation: none; }
-}
-
-/* En pantallas chicas estorban más de lo que aportan. */
-@media (max-width: 640px) {
-  .pet { display: none; }
-}
 
 /* ══════════════════════════════════════════════════════════════
    VISOR DE IMAGEN (LIGHTBOX)
@@ -1552,4 +1336,131 @@ legend { font-size: 0.76rem; }
   grid-template-columns: minmax(0, 40rem) minmax(0, 19rem);
   justify-content: start;
   gap: 2rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DATOS DE UN VISTAZO
+   Sustituyen a los sprites decorativos que ocupaban el margen. La
+   diferencia: esto se puede leer. Un número grande con su etiqueta
+   pequeña responde en un segundo lo que un párrafo tarda diez.
+   ══════════════════════════════════════════════════════════════ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 2px solid var(--border-hi);
+  margin: 1.25rem 0;
+  max-width: 34rem;
+}
+.stats-wide { max-width: none; }
+
+.stat { background: var(--bg2); padding: 0.8rem 1rem; }
+.stat dt {
+  font-family: var(--font-px);
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.2rem;
+}
+.stat dd {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent);
+  /* Cifras de ancho fijo: los números de varias tarjetas quedan
+     alineados entre sí en vez de bailar según el dígito. */
+  font-variant-numeric: tabular-nums;
+}
+.stat-of {
+  font-family: var(--font-px);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+
+/* ── HERO ─────────────────────────────────────────────────────
+   Antes eran la foto y tres líneas sueltas. Ahora dice a qué vino
+   la página antes de que haya que desplazarse. */
+.hero-line {
+  font-size: 1.1rem;
+  color: var(--text);
+  max-width: 46ch;
+  margin-bottom: 0.5rem;
+}
+.hero-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.hero-cta .btn { margin-top: 0; }
+
+/* ── RETÍCULA DE TARJETAS ─────────────────────────────────────
+   Actividades y Mapa apilaban artículos, y ambas páginas se hacían
+   largas sin ganar nada. Se reacomoda sola, sin media queries. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+.card-grid > article {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  padding: 1.1rem 1.25rem;
+}
+.card-grid > article > *:first-child { margin-top: 0; }
+.card-grid figure { margin-top: 0; }
+.card-grid p, .card-grid ul, .card-grid ol { max-width: none; }
+
+/* ── FORMULARIO EN DOS COLUMNAS ───────────────────────────────
+   Cinco bloques seguidos son mucho formulario de golpe: se ve una
+   pared vertical y no se sabe cuánto falta. En dos columnas se
+   abarca de una mirada. */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 0 1.5rem;
+  align-items: start;
+}
+.form-grid fieldset { margin-bottom: 1.25rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   MICRO-INTERACCIONES
+   Lo que hace que una página se sienta viva no es el adorno, es que
+   responda. Cada regla de aquí confirma un gesto del usuario.
+   ══════════════════════════════════════════════════════════════ */
+
+/* La fila del horario se resalta entera al recorrerla con el mouse:
+   con doce filas y cinco columnas, perder el renglón es lo más
+   fácil del mundo. */
+.timetable tbody tr:hover th,
+.timetable tbody tr:hover td:not([class]) { background: var(--bg3); }
+.timetable tbody tr:hover th { color: var(--accent); }
+
+.sessions tbody tr:hover td { background: var(--bg3); }
+
+/* Las tarjetas se levantan un punto: suficiente para leerse como
+   "esto responde", lejos del rebote que distrae. */
+.card-grid > article {
+  transition: transform var(--transition), box-shadow var(--transition),
+              border-color var(--transition);
+}
+.card-grid > article:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hi);
+  box-shadow: var(--shadow-px);
+}
+
+/* Los bloques de clase avisan que llevan a alguna parte. */
+.timetable td[class] { transition: filter var(--transition); }
+.timetable td[class]:hover { filter: brightness(0.94); }
+
+/* El campo activo se separa del resto sin gritar. */
+input:hover, select:hover, textarea:hover { border-color: var(--text-dim); }
+
+/* La entrada del menú actual no se mueve al pasar por encima: ya
+   estás ahí, y moverla sugeriría que lleva a otro sitio. */
+.nav-list a[aria-current="page"]:hover { background: var(--accent-bg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-grid > article:hover { transform: none; }
 }
