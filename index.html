@@ -9,6 +9,8 @@
 
 <body>
 
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <!-- Pantalla del saludo. Nace oculta y solo aparece cuando el
      botón la convierte en el :target de la URL (#hello). Va PRIMERO
      en el documento para poder ocultar al botón con el combinador
@@ -26,24 +28,26 @@
 </section>
 
 <header>
-    <a class="logo" href="index.html">
-        <img class="logo-img" src="assets/university.png"
-             alt="Yachay Tech University logo" width="120">
-    </a>
-    <h1 class="site-title">My University Website</h1>
-    <nav class="nav" aria-label="Main Navigation">
-        <ul class="nav-list">
-            <li><a href="index.html">Home</a></li>
+    <div class="header-inner">
+        <a class="brand" href="index.html">
+                <img class="logo-img" src="assets/university.png"
+                     alt="Yachay Tech University logo" width="120">
+            </a>
+        <h1 class="site-title">My University Website</h1>
+        <nav class="nav" aria-label="Main navigation">
+            <ul class="nav-list">
+            <li><a href="index.html" aria-current="page">Home</a></li>
             <li><a href="pages/courses.html">Courses</a></li>
             <li><a href="pages/schedule.html">Schedule</a></li>
             <li><a href="pages/activities.html">Activities</a></li>
             <li><a href="pages/map.html">Map</a></li>
             <li><a href="pages/contact.html">Contact</a></li>
         </ul>
-    </nav>
+        </nav>
+    </div>
 </header>
 
-<main>
+<main id="main">
     <section id="home" class="hero">
         <figure class="avatar">
             <img src="assets/perfil.jpg" width="220" height="220"

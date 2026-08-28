@@ -53,6 +53,16 @@
   --accent-bg:   rgba(164, 22, 26, 0.08);
   --accent-bd:   rgba(164, 22, 26, 0.25);
 
+  /* Un color pastel por materia. Es un refuerzo, no la única pista:
+     cada celda lleva escrito el código del curso, así que quien no
+     distingue colores no pierde información. */
+  --sub-web-bg:   #dbeafe;
+  --sub-web-bd:   #6b9bd1;
+  --sub-stoch-bg: #fbdedd;
+  --sub-stoch-bd: #cc7b78;
+  --sub-phys-bg:  #fbf0c4;
+  --sub-phys-bd:  #c9a63a;
+
   /* Estado (semántico, independiente del acento) */
   --ok:          #1c6b45;
 
@@ -91,6 +101,15 @@
     --accent-bg:  rgba(248, 113, 113, 0.12);
     --accent-bd:  rgba(248, 113, 113, 0.30);
     --ok:         #6fcb9f;
+    /* Pasteles apagados: en oscuro un pastel claro deslumbra y el
+       texto encima deja de leerse. */
+    --sub-web-bg:   #17293c;
+    --sub-web-bd:   #3f6a96;
+    --sub-stoch-bg: #3a1e1f;
+    --sub-stoch-bd: #94494c;
+    --sub-phys-bg:  #34301a;
+    --sub-phys-bd:  #8a7730;
+
     --shadow:     0 1px 3px rgba(0, 0, 0, 0.5),
                   0 4px 16px rgba(0, 0, 0, 0.3);
   }
@@ -156,6 +175,7 @@ img { max-width: 100%; height: auto; display: block; }
    JavaScript: todo es animación CSS y un enlace ancla. */
 .intro {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -280,6 +300,33 @@ img { max-width: 100%; height: auto; display: block; }
 
 .intro-wait { animation: appear 0.6s ease 2.9s both; }
 
+/* ── ENLACE DE SALTO ──────────────────────────────────────────
+   Primer elemento enfocable de la página. Está fuera de la vista
+   hasta que recibe el foco: quien navega con teclado puede saltarse
+   las seis entradas del menú en cada página en vez de tabular por
+   todas ellas. Se mueve, no se oculta con `display: none`, porque
+   un elemento oculto así no es enfocable. */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  z-index: 200;
+  font-family: var(--font-px);
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: var(--bg2);
+  background: var(--accent);
+  border: 2px solid var(--accent);
+  padding: 0.6rem 1.1rem;
+  transition: top var(--transition);
+}
+.skip-link:focus {
+  top: 0.5rem;
+  color: var(--bg2);
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+}
+
 /* ── HEADER + NAVEGACIÓN ──────────────────────────────────────── */
 header {
   background: var(--bg2);
@@ -287,38 +334,59 @@ header {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 0.75rem 1.5rem;
 }
 
-.logo { display: inline-block; text-decoration: none; }
+/* Marca y menú comparten un solo contenedor centrado. Antes el logo
+   y el título vivían fuera del `.nav`, que era el único con
+   `max-width` y `margin: 0 auto`; por eso sus bordes izquierdos no
+   coincidían y el encabezado ocupaba tres filas. */
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+.brand:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .logo-img { height: 34px; width: auto; }
 
 .site-title {
   font-family: var(--font-px);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text);
   max-width: none;
-  margin: 0.4rem 0 0.6rem;
+  margin: 0;
+  flex: 0 1 auto;
 }
-h1.site-title { font-size: 1.15rem; margin-bottom: 0.6rem; }
 
-.nav {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
+/* El menú se va al extremo opuesto de la misma fila. */
+.nav { margin-left: auto; }
 
 .nav-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.25rem;
   list-style: none;
+  margin: 0;
 }
 
 .nav-list a {
-  display: block;
+  display: flex;
+  align-items: center;
+  /* 44px de alto: es el mínimo cómodo para tocar con el dedo. */
+  min-height: 44px;
   font-family: var(--font-px);
   font-size: 0.8rem;
   letter-spacing: 0.06em;
@@ -330,19 +398,35 @@ h1.site-title { font-size: 1.15rem; margin-bottom: 0.6rem; }
   transition: color var(--transition), border-color var(--transition),
               background var(--transition);
 }
-.nav-list a:hover,
-.nav-list a:focus-visible {
+.nav-list a:hover {
   color: var(--accent);
   border-color: var(--accent);
   background: var(--accent-bg);
-  outline: none;
+}
+.nav-list a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -2px;
+  color: var(--accent);
+}
+
+/* La página actual se marca en el HTML con aria-current="page", así
+   que el lector de pantalla la anuncia y el CSS la puede estilar
+   desde el mismo atributo: una sola fuente de verdad. El subrayado
+   acompaña al color, para no depender solo del color. */
+.nav-list a[aria-current="page"] {
+  color: var(--accent);
+  border-color: var(--accent-bd);
+  background: var(--accent-bg);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 2px;
 }
 
 /* El encabezado va pegado arriba, así que al saltar a un ancla el
    destino quedaba escondido detrás. `scroll-margin-top` reserva esa
    altura para que la sección aterrice completa y visible. */
-:target { scroll-margin-top: 7.5rem; }
-main [id] { scroll-margin-top: 7.5rem; }
+:target { scroll-margin-top: 6rem; }
+main [id] { scroll-margin-top: 6rem; }
 
 /* ── LAYOUT DE CONTENIDO ──────────────────────────────────────── */
 main {
@@ -389,7 +473,7 @@ main {
 
 /* ── HERO ─────────────────────────────────────────────────────── */
 .hero {
-  scroll-margin-top: 7.5rem;
+  scroll-margin-top: 6rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.75rem;
@@ -596,6 +680,29 @@ td[rowspan] {
   font-weight: 600;
 }
 
+/* ── COLOR POR MATERIA ────────────────────────────────────────
+   Cada asignatura tiene su pastel y se repite en el horario, en la
+   tabla de sesiones y en su ficha de Courses, para que la vista se
+   pueda seguir de una página a otra. */
+td.c-web,
+td.c-stoch,
+td.c-phys { color: var(--text); font-weight: 600; }
+
+td.c-web   { background: var(--sub-web-bg);   border: 2px solid var(--sub-web-bd); }
+td.c-stoch { background: var(--sub-stoch-bg); border: 2px solid var(--sub-stoch-bd); }
+td.c-phys  { background: var(--sub-phys-bg);  border: 2px solid var(--sub-phys-bd); }
+
+/* En la ficha de cada curso el color va en una franja superior:
+   identifica la materia sin teñir el texto, que debe seguir siendo
+   el elemento más legible de la página. */
+.section.c-web,
+.section.c-stoch,
+.section.c-phys { border-top-width: 6px; }
+
+.section.c-web   { border-top-color: var(--sub-web-bd); }
+.section.c-stoch { border-top-color: var(--sub-stoch-bd); }
+.section.c-phys  { border-top-color: var(--sub-phys-bd); }
+
 tfoot td {
   font-family: var(--font-px);
   font-size: 0.78rem;
@@ -746,8 +853,10 @@ footer p {
   body { font-size: 15px; }
   main { padding: 1.25rem 0.9rem 2rem; }
   .section { padding: 1.1rem; }
-  header { padding: 0.6rem 0.9rem; }
-  .nav-list { gap: 0.25rem; }
+  .header-inner { padding: 0.5rem 0.9rem; gap: 0.4rem 0.75rem; }
+  .site-title { font-size: 0.9rem; }
+  .nav { margin-left: 0; width: 100%; }
+  .nav-list { gap: 0.2rem; }
   .nav-list a { font-size: 0.72rem; padding: 0.25rem 0.5rem; }
   .hero { gap: 1.25rem; }
   .print-btn { padding: 0.5rem 1.5rem; }

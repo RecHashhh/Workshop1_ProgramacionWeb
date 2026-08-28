@@ -9,25 +9,29 @@
 
 <body>
 
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <header>
-    <a class="logo" href="../index.html">
-        <img class="logo-img" src="../assets/university.png"
-             alt="Yachay Tech University logo" width="120">
-    </a>
-    <p class="site-title">My University Website</p>
-    <nav class="nav" aria-label="Main Navigation">
-        <ul class="nav-list">
+    <div class="header-inner">
+        <a class="brand" href="../index.html">
+                <img class="logo-img" src="../assets/university.png"
+                     alt="Yachay Tech University logo" width="120">
+            </a>
+        <p class="site-title">My University Website</p>
+        <nav class="nav" aria-label="Main navigation">
+            <ul class="nav-list">
             <li><a href="../index.html">Home</a></li>
-            <li><a href="courses.html">Courses</a></li>
+            <li><a href="courses.html" aria-current="page">Courses</a></li>
             <li><a href="schedule.html">Schedule</a></li>
             <li><a href="activities.html">Activities</a></li>
             <li><a href="map.html">Map</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
-    </nav>
+        </nav>
+    </div>
 </header>
 
-<main>
+<main id="main">
 
     <section id="intro" class="section">
         <h1>My Courses</h1>
@@ -40,7 +44,7 @@
         </p>
     </section>
 
-    <section id="ca57" class="section">
+    <section id="ca57" class="section c-web">
         <h2>CA57 &ndash; <span lang="es">Programaci&oacute;n Web</span></h2>
         <p class="meta">Course code: CA57 &middot; 2026SEM02UNICA-A00069</p>
         <p>
@@ -78,7 +82,7 @@
         </p>
     </section>
 
-    <section id="ta24" class="section">
+    <section id="ta24" class="section c-stoch">
         <h2>CA56-TA24 &ndash; <span lang="es">Procesos Estoc&aacute;sticos</span></h2>
         <p class="meta">Course code: CA56-TA24 &middot; 2026SEM02UNICA-A00263</p>
         <p>
@@ -118,7 +122,7 @@
         <span class="pet pet-bird" aria-hidden="true"></span>
     </section>
 
-    <section id="tm11" class="section">
+    <section id="tm11" class="section c-phys">
         <h2>TM11 &ndash; <span lang="es">F&iacute;sica II</span></h2>
         <p class="meta">Course code: TM11 &middot; 2026SEM02UNICA-A00104</p>
         <p>
